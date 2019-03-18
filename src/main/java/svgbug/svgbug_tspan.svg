@@ -1,0 +1,10 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="22mm" height="22mm" contentStyleType="text/css">
+	<rect id="border" x="1mm" y="1mm" width="20mm" height="20mm" style="fill:none;stroke:black;stroke-width:0.2mm; " rx="2mm" ry="2mm" />
+	<text style="fill:black;font-family:Arial;font-size:12pt;">
+		<tspan x="3mm" y="5mm" id="line1">line1</tspan>
+		<tspan x="4mm" y="10mm" id="line2">line2</tspan>
+		<tspan x="5mm" y="15mm" id="line3"> </tspan>
+		<tspan x="6mm" y="20mm" id="line4"> </tspan>
+	</text>
+</svg>

@@ -1,0 +1,73 @@
+Migration auf Version 2018.03
+=============================
+Konfiguration
+-------------
+Es sollte jetzt das Konzept der "Named Groups" (Feature in Java Regex) verwendet werden.
+Dafür wurde ein neues Property *.regex für jedes Template eingeführt, welches den kompletten regulären Ausdruck.
+Früher wurden auf die Zeichenkette schrittweise von links einzelne Pattern angewendet, um dadurch die einzelnen 
+Teilzeichenketten für die Ersetzung in der SVG-Datei zu ermitteln.
+Die Bezeichnungen der Names Groups dürfen keinen "_" enthalten. Deshalb müssen auch die ID-Attribute in den SVG-Dateien
+umbenannt werden. 
+
+Außerdem wird jetzt als Eingabe für den Regulären Ausdruck auch die komplette Zeichenkette in der Form
+!Standort!Signatur verwendet. Dadurch können auch Standortinformationen auf dem Etikett gedruckt werden.
+Wir diese für das Etikett nicht, kann sie über den Audruck ([!].*[!]) identifziert und ausgeschlossen werden.  
+
+Alt:
+
+signed.label.rvk.pattern.01.zeile_1=^[a-zA-Z]+
+signed.label.rvk.pattern.02._ignore=\\s
+signed.label.rvk.pattern.03.zeile_2=^[0-9]+([a-zA-Z0-9]+)?
+signed.label.rvk.pattern.04._ignore=\\s
+signed.label.rvk.pattern.05.zeile_3=^[-]?[^\\s-]+
+signed.label.rvk.pattern.06._ignore=\\s
+signed.label.rvk.pattern.07.zeile_4=^[-]?[^\\s-]+
+signed.label.rvk.pattern.08._ignore=\\s
+signed.label.rvk.pattern.09.zeile_5=.+ 
+
+Neu:
+Die Named Groups werden wie folgt definiert: (?<name>...).
+Für die Umstellung werden die alten regulären Ausdrücke aneinander gefügt und die Named Groups entsprechend ausgezeichnet.
+Ggf müssen spätere Zeilen noch als Optional gekennezeichnet werden: (...)? Da der gesamte reguläre Ausdruck auf die Signatur
+passen muss.
+
+signed.label.rvk.regex=^([!].*[!])(?<zeile1>[a-zA-Z]+)\\s(?<zeile2>[0-9]+([a-zA-Z0-9]+)?)(\\s?(?<zeile3>[-]?[^\\s-]+))?(\\s?(?<zeile4>[-]?[^\\s-]+))?(\\s?(?<zeile5>.+))?
+
+Die Konfiguration via *.pattern Properties wird in einer der nächsten Versionen entfernt.
+
+SVG-Dateien
+-----------
+1. Elemente, die nicht gedruckt werden (z.B. Ränder) sollten mit der Klasse "noprint" gekennzeichnet werden.
+Bisher wurden diese Elemente mit ihrer ID im Property *.noprint eingetragen.
+Diese Funktionalität wird in einer nächsten Version entfernt.
+
+2. Die Teilzeichenketten können mit dem Attribut aria-label ausgezeichnet werden.
+Dieses Attribut wird dann für die Anzeige des Feldes in der Eingabemaske verwendet.
+Fehlt das Attribut wird wie bsiher die ID des Elements für die Anzeige verwendet.
+
+
+
+
+
+Migration auf Version Mai 2015
+==============================
+Ersetzen der Konfigurationsdatei (signed_cfg.properties)
+
+Migration April 2015
+====================
+
+Auf Grund von Änderungen an den Etiketten für die Lehrerbildungsbibliothek müssen
+wir die Anwendung aktualisieren.
+
+Der Installationspfad ist "C:\Programmme\Etikettendruck"
+
+1) Sichern der Datei "signed_cfg.properties vom Mitarbeiterrechner.
+
+2) Ersetzen der Anwendung im Programmverzeichnis.
+
+3) Übertragen der Drucker-Properties (am Dateiende nach "#Drucker-Konfiguration") aus der Konfigurationsdatei der Mitarbeiter in 
+   die NEUE Datei "signed_printer.properties" (überschreiben der bestehenden Einträge).
+   
+Danach sollte alles wieder wie gewohnt funktionieren.
+
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      width="297mm" height="210mm">
+    <rect id="border" x="0.25mm" y="0.25mm" width="296mm" height="209mm"  
+          style="fill:none;stroke:black;stroke-width:0.5mm; "/>
+   
+   <text x="5mm" y="8mm" style="fill:black;font-family:Arial;font-size:16pt;">UB Rostock: Signatur Etiketten</text>
+  
+          
+</svg>
