@@ -109,6 +109,10 @@ public class SignedApp {
         return svgService.calcSVG(template, labelData, print);
     }
 
+    public SVGDocument loadSVGTemplate(String template) {
+        return svgService.loadSVGTemplate(template);
+    }
+    
     public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject shelfmark, String template) {
         return labelService.calcShelfmarkLabelData(shelfmark, template);
     }

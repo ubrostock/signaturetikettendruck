@@ -43,7 +43,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -324,7 +323,7 @@ public class SignedFrame extends Frame {
     }
 
     private void updateTexte() {
-        SVGDocument svg = app.calcSVG(readTemplateKey(), Collections.emptyMap(), false);
+        SVGDocument svg = app.loadSVGTemplate(readTemplateKey());
 
         pnlTexts.removeAll();
         txtLines.clear();

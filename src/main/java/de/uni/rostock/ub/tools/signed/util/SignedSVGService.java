@@ -21,7 +21,6 @@ package de.uni.rostock.ub.tools.signed.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
@@ -60,7 +59,7 @@ public class SignedSVGService {
                 setTextContent(svg.getElementById(key), "");
             }
         }
-        
+
         //set fields
         for (String id : texte.keySet()) {
             if (svg.getElementById(id) == null) {
@@ -94,6 +93,17 @@ public class SignedSVGService {
         }
     }
 
+    public SVGDocument loadSVGTemplate(String template) {
+        SAXSVGDocumentFactory fac = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
+        String filename = config.getConfig().getProperty("signed.label." + template + ".templatefile");
+        try (InputStream is = getClass().getResourceAsStream("/" + filename)) {
+            return fac.createSVGDocument(null, is);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * creates the SVG Document for the label. The property "signed.label.*.noprint"
      * contains a comma separated list of SVG element IDs, which should not be used
@@ -108,50 +118,37 @@ public class SignedSVGService {
     public SVGDocument calcSVG(String template, Map<String, String> texts, boolean print) {
         SAXSVGDocumentFactory fac = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
         SVGDocument doc = null;
-        InputStream is = null;
-        try {
-            try {
-                String filename = config.getConfig().getProperty("signed.label." + template + ".templatefile");
-                is = getClass().getResourceAsStream("/" + filename);
+        String filename = config.getConfig().getProperty("signed.label." + template + ".templatefile");
 
-                doc = fac.createSVGDocument(null, is);
-                updateSVG(doc, template, texts);
-
-                if (print) {
-                    // delete SVG elements, with id (defined in property)
-                    if (config.getConfig().getProperty("signed.label." + template + ".noprint") != null) {
-                        String[] noPrintIDs = config.getConfig().getProperty("signed.label." + template + ".noprint")
-                            .split(",");
-                        for (String id : noPrintIDs) {
-                            Element e = doc.getElementById(id.trim());
-                            if (e != null) {
-                                e.getParentNode().removeChild(e);
-                            }
-                        }
-                    }
-
-                    // delete all SVG elements with attribute class="noprint"
-                    // iterate from last to first, that the counter keeps valid if an element was
-                    // deleted
-                    NodeList nl = doc.getElementsByTagName("*");
-                    for (int i = nl.getLength() - 1; i >= 0; i--) {
-                        Element e = (Element) nl.item(i);
-                        if (e.hasAttribute("class") && e.getAttribute("class").contains("noprint")) {
+        try (InputStream is = getClass().getResourceAsStream("/" + filename)) {
+            doc = fac.createSVGDocument(null, is);
+            updateSVG(doc, template, texts);
+            if (print) {
+                // delete SVG elements, with id (defined in property)
+                if (config.getConfig().getProperty("signed.label." + template + ".noprint") != null) {
+                    String[] noPrintIDs = config.getConfig().getProperty("signed.label." + template + ".noprint")
+                        .split(",");
+                    for (String id : noPrintIDs) {
+                        Element e = doc.getElementById(id.trim());
+                        if (e != null) {
                             e.getParentNode().removeChild(e);
                         }
                     }
                 }
 
-            } catch (IOException e) {
-                return null;
-            } finally {
-                if (is != null) {
-                    is.close();
+                // delete all SVG elements with attribute class="noprint"
+                // iterate from last to first, that the counter keeps valid if an element was
+                // deleted
+                NodeList nl = doc.getElementsByTagName("*");
+                for (int i = nl.getLength() - 1; i >= 0; i--) {
+                    Element e = (Element) nl.item(i);
+                    if (e.hasAttribute("class") && e.getAttribute("class").contains("noprint")) {
+                        e.getParentNode().removeChild(e);
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-
         }
         return doc;
     }
