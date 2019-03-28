@@ -115,7 +115,7 @@ public class SignedFrame extends Frame {
         Label lblBarcode = new Label("Barcode:");
         add(lblBarcode, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
-        txtBarcode = new TextField("28$010546723");
+        txtBarcode = new TextField("");
         add(txtBarcode, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 
@@ -167,12 +167,21 @@ public class SignedFrame extends Frame {
         txtLocation = new TextField();
         add(txtLocation, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+        txtLocation.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    txtLocation.selectAll();
+                }
+            }
+        });
 
         txtLoanindicator = new TextField();
         txtLoanindicator.setEditable(false);
         add(txtLoanindicator, new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 
+        
         Label lblSignatur = new Label("Signatur:");
         add(lblSignatur, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
