@@ -12,6 +12,7 @@
     <batik.version>1.10</batik.version>
   </properties>
   <build>
+    <finalName>${project.name}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
