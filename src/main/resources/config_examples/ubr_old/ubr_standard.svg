@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      width="27mm" height="35mm"
+      viewBox="0 0 102 132">
+<!--  viewBox wird benötigt für auto-zoom in swing.JSVGCanvas. 
+ 		Berechnung aus width und height (mm -> pixel): x * 96 / 25.4  -->
+    <rect id="border" class="noprint" x="0.2mm" y="0.2mm" width="26.6mm" height="34.6mm" rx="3mm" ry="3mm" 
+          style="fill:none;stroke:black;stroke-width:0.2mm;" />
+    <text x="12px" y="18px" style="fill:black;font-family:Arial;font-size:10pt;">UB Rostock</text>
+    <text style="fill:black;font-family:Arial;font-size:14pt;font-weight:bold">
+        <tspan id="zeile1" aria-label="Zeile 1" x="12px" y="38px">GB</tspan>
+        <tspan id="zeile2" aria-label="Zeile 2" x="12px" y="59px">2980</tspan>
+    </text>
+    <text style="fill:black;font-family:Arial;font-size:12pt;">
+        <tspan id="zeile3" aria-label="Zeile 3"  x="12px" y="89px">H322</tspan>
+        <tspan id="zeile4" aria-label="Zeile 4"  x="12px" y="107px">Reg(17)</tspan>
+        <tspan id="zeile5" aria-label="Zeile 5"  x="12px" y="125px">-2(.004)</tspan>
+    </text>
+</svg>
