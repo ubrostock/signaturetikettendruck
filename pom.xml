@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.uni.rostock.ub.tools</groupId>
   <artifactId>signaturetikettendruck</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2.0</version>
   <packaging>jar</packaging>
   <name>signaturetikettendruck</name>
   <url>https://github.com/ubrostock/signaturetikettendruck</url>
