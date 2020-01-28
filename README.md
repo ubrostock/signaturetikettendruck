@@ -12,6 +12,8 @@ und ggf. vor dem Ausdrucken über eine Eingabemaske korrigiert werden.
 #### Screenshot:
 ![Screenshot](https://raw.githubusercontent.com/wiki/ubrostock/signaturetikettendruck/images/app_screenshot.png)
 
+Sie können die aktuelle Version im [Download-Bereich](https://github.com/ubrostock/signaturetikettendruck/releases) herunterladen.
+
 Weitere Informationen finden Sie im [Wiki](https://github.com/ubrostock/signaturetikettendruck/wiki):
 * [Installation und Start](https://github.com/ubrostock/signaturetikettendruck/wiki/Installation-und-Start)
 * [Konfiguration](https://github.com/ubrostock/signaturetikettendruck/wiki/Konfiguration)

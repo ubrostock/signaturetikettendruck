@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg  xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      height="27mm" width="38mm"
+      viewBox="0 0 144 102">
+ 	  <!--  viewBox für auto-zoom in swing.JSVGCanvas  
+ 	        Umrechnung: mm -> px: x * 96 / 25.4  -->
+
+    <rect id="border" class="noprint" x="0.2mm" y="0.2mm" height="26.6mm" width="37.6mm" rx="3mm" ry="3mm" 
+          style="fill:none;stroke:black;stroke-width:0.2mm; "/>
+    <text style="fill:black;font-family:Arial;font-size:16pt;font-weight:bold">
+        <tspan id="zeile1" x="20px" y="45px">ZB</tspan>
+        <tspan id="zeile2" x="20px" y="71px">490</tspan>
+   </text>
+</svg>
