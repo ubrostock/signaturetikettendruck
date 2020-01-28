@@ -1,6 +1,13 @@
 Migrationen für Signaturetikettendruck
 ======================================
 
+
+Migration auf Version 1.2.1 (Januar 2020)
+=========================================
+Das Property "signed.application.1stbarcode" wurde hinzugefügt,
+damit lässt sich der Barcode, der beim Programmstart automatisch angezeigt wird, konfigurieren.
+
+
 Migration auf Version 1.2.0 (März 2018)
 =======================================
 
@@ -61,8 +68,8 @@ Migration auf Version 1.1.1 (Mai 2015)
 Ersetzen der Konfigurationsdatei (signed_cfg.properties)
 
 
-Migration auf Versio 1.1.0 (April 2015)
-=======================================
+Migration auf Version 1.1.0 (April 2015)
+========================================
 
 Auf Grund von Änderungen an den Etiketten für die Lehrerbildungsbibliothek müssen
 wir die Anwendung aktualisieren.
@@ -77,5 +84,4 @@ Der Installationspfad ist "C:\Programmme\Etikettendruck"
    aus der Konfigurationsdatei der Mitarbeiter in 
    die NEUE Datei "signed_printer.properties" (überschreiben der bestehenden Einträge).
    Danach sollte alles wieder wie gewohnt funktionieren.
-
-
+   
