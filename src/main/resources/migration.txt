@@ -84,5 +84,4 @@ Der Installationspfad ist "C:\Programmme\Etikettendruck"
    aus der Konfigurationsdatei der Mitarbeiter in 
    die NEUE Datei "signed_printer.properties" (überschreiben der bestehenden Einträge).
    Danach sollte alles wieder wie gewohnt funktionieren.
-
-
+   
