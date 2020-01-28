@@ -116,6 +116,10 @@ public class SignedFrame extends Frame {
         add(lblBarcode, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
         txtBarcode = new TextField("");
+        String firstBarcode = app.getConfigService().getConfig().getProperty("signed.application.1stbarcode");
+        if(firstBarcode!=null){
+            txtBarcode.setText(firstBarcode);
+        }
         add(txtBarcode, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
                 GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 
