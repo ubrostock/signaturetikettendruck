@@ -5,7 +5,5 @@
     <rect id="border" x="0.25mm" y="0.25mm" width="296mm" height="209mm"  
           style="fill:none;stroke:black;stroke-width:0.5mm; "/>
    
-   <text x="5mm" y="8mm" style="fill:black;font-family:Arial;font-size:16pt;">UB Rostock: Signatur Etiketten</text>
-  
-          
+   <text x="5mm" y="8mm" style="fill:black;font-family:Arial;font-size:16pt;">Signatur-Etiketten Spickzettel</text>         
 </svg>
