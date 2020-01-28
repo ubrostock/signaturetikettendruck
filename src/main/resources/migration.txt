@@ -69,7 +69,7 @@ Ersetzen der Konfigurationsdatei (signed_cfg.properties)
 
 
 Migration auf Version 1.1.0 (April 2015)
-=======================================
+========================================
 
 Auf Grund von Änderungen an den Etiketten für die Lehrerbildungsbibliothek müssen
 wir die Anwendung aktualisieren.
