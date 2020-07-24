@@ -20,6 +20,8 @@
 package de.uni.rostock.ub.tools.signed.util;
 
 import java.awt.print.Printable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.print.DocFlavor;
@@ -55,17 +57,23 @@ public class SignedPrintService {
         PrintService psOutput = null;
         PrintService[] prservices = PrintServiceLookup.lookupPrintServices(null, null);
         Properties printerConfig = config.getPrinterConfig();
+        List<String>printers = new ArrayList<String>();
         String printerName = printerConfig.getProperty("signed.printer.name").trim();
+        for(String s : printerName.split("\\,")) {
+        	printers.add(s.trim());
+        }
 
-        for (PrintService ps : prservices) {
-            if (ps.getName().contains(printerName)) {
-                psOutput = ps;
-                break;
-            }
+        outer: for (PrintService ps : prservices) {
+        	for(String printer: printers) {
+        		if (ps.getName().contains(printer)) {
+        			psOutput = ps;
+        			break outer;
+        		}
+        	}
         }
 
         if (psOutput == null) {
-            System.err.println("Drucker " + printerName + " nicht gefunden.");
+            System.err.println("Drucker '" + printerName + "' nicht gefunden.");
             System.err.print("Folgende Drucker sind verfügbar: ");
             for (PrintService ps : prservices) {
                 System.err.print(ps.getName() + ", ");
