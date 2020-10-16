@@ -1,0 +1,16 @@
+Signaturetikettendruck
+======================
+Version
+-------
+    ${project.version}
+ 
+Build-Infos
+-----------
+    Implementation-GroupId:    ${project.groupId}
+    Implementation-ArtifactId: ${project.artifactId}
+    Implementation-Version:    ${project.version}
+    
+    SCM-Remote-URL: ${git.remote.origin.url}
+    SCM-Branch:     ${git.branch}
+    SCM-Commit:     ${git.commit.id.describe-short}
+    SCM-Time:       ${git.commit.time}

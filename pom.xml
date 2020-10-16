@@ -3,11 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.uni.rostock.ub.tools</groupId>
   <artifactId>signaturetikettendruck</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>jar</packaging>
   <name>signaturetikettendruck</name>
   <url>https://github.com/ubrostock/signaturetikettendruck</url>
   <properties>
+    <revision>1.2-SNAPSHOT</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <batik.version>1.10</batik.version>
   </properties>
@@ -22,7 +23,24 @@
           <target>1.8</target>
         </configuration>
       </plugin>
-
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>4.0.1</version>
+        <executions>
+          <execution>
+            <id>get-the-git-infos</id>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+          <offline>true</offline>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -63,7 +81,7 @@
                 <resource>
                   <directory>src/main/resources</directory>
                   <includes>
-                    <include>**/version.txt</include>
+                    <include>**/version.info</include>
                   </includes>
                   <filtering>true</filtering>
                 </resource>
