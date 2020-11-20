@@ -34,6 +34,7 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.OrientationRequested;
+import javax.swing.JOptionPane;
 
 import org.w3c.dom.svg.SVGDocument;
 
@@ -63,8 +64,8 @@ public class SignedPrintService {
         	printers.add(s.trim());
         }
 
-        outer: for (PrintService ps : prservices) {
-        	for(String printer: printers) {
+        outer: for(String printer: printers) {
+            for (PrintService ps : prservices) {
         		if (ps.getName().contains(printer)) {
         			psOutput = ps;
         			break outer;
@@ -73,12 +74,15 @@ public class SignedPrintService {
         }
 
         if (psOutput == null) {
-            System.err.println("Drucker '" + printerName + "' nicht gefunden.");
-            System.err.print("Folgende Drucker sind verfügbar: ");
+            String msg = "Drucker '" + printerName + "' nicht gefunden.";
+            System.err.println(msg);
+            StringBuffer out = new StringBuffer();
+            out.append("Folgende Drucker sind verfügbar: ");
             for (PrintService ps : prservices) {
-                System.err.print(ps.getName() + ", ");
+                out.append("\n" + ps.getName() + ", ");
             }
-            System.err.println();
+            System.err.println(out);
+            JOptionPane.showMessageDialog(null, msg + "\n\n" + out.toString(), "Druckerfehler", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
 
