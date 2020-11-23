@@ -54,6 +54,13 @@
             </manifest>
             <manifestEntries>
               <Class-Path>.</Class-Path>
+              <Implementation-Group-ID>${project.groupId}</Implementation-Group-ID>
+              <Implementation-Artifact-ID>${project.artifactId}</Implementation-Artifact-ID>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <SCM-Commit>${git.commit.id.describe-short}</SCM-Commit>
+              <SCM-Time>${git.commit.time}</SCM-Time>
+              <SCM-Branch>${git.branch}</SCM-Branch>
+              <SCM-Remote-URL>${git.remote.origin.url}</SCM-Remote-URL>
             </manifestEntries>
           </archive>
           <excludes>

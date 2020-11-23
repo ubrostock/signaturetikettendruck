@@ -19,7 +19,12 @@
  */
 package de.uni.rostock.ub.tools.signed;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import org.w3c.dom.svg.SVGDocument;
 
@@ -28,9 +33,9 @@ import de.uni.rostock.ub.tools.signed.model.ShelfmarkObject;
 import de.uni.rostock.ub.tools.signed.ui.SignedFrame;
 import de.uni.rostock.ub.tools.signed.util.SignedCatalogService;
 import de.uni.rostock.ub.tools.signed.util.SignedConfigService;
-import de.uni.rostock.ub.tools.signed.util.SignedShelfmarkService;
 import de.uni.rostock.ub.tools.signed.util.SignedPrintService;
 import de.uni.rostock.ub.tools.signed.util.SignedSVGService;
+import de.uni.rostock.ub.tools.signed.util.SignedShelfmarkService;
 
 /**
  * Signaturettikettendruck (Signed)
@@ -112,8 +117,59 @@ public class SignedApp {
     public SVGDocument loadSVGTemplate(String template) {
         return svgService.loadSVGTemplate(template);
     }
-    
+
     public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject shelfmark, String template) {
         return labelService.calcShelfmarkLabelData(shelfmark, template);
+    }
+
+    public static String retrieveBuildInfosFromManifest(boolean addCommitInfos) {
+
+        Enumeration<URL> resources;
+        try {
+            resources = SignedApp.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+
+                Manifest manifest = new Manifest(url.openStream());
+                Attributes attributes = manifest.getMainAttributes();
+                if ("signaturetikettendruck".equals(attributes.getValue("Implementation-Artifact-ID"))) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(attributes.getValue("Implementation-Title"))
+                        .append(" ").append(attributes.getValue("Implementation-Version"));
+                    if (addCommitInfos) {
+                        sb.append(" [SCM: \"").append(attributes.getValue("SCM-Branch"))
+                            .append("\" \"").append(attributes.getValue("SCM-Commit"))
+                            .append("\" \"" + attributes.getValue("SCM-Time")).append("\"]");
+                    }
+                    return sb.toString();
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Unable to read manifest entry");
+            e.printStackTrace();
+        }
+        return "Signaturetikettendruck";
+    }
+
+    public static String retrieveVersionFromManifest() {
+
+        Enumeration<URL> resources;
+        try {
+            resources = SignedApp.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+
+                Manifest manifest = new Manifest(url.openStream());
+                Attributes attributes = manifest.getMainAttributes();
+                if ("signaturetikettendruck".equals(attributes.getValue("Implementation-Artifact-ID"))) {
+                    return attributes.getValue("Implementation-Version");
+
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Unable to read manifest entry");
+            e.printStackTrace();
+        }
+        return "";
     }
 }

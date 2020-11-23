@@ -88,7 +88,8 @@ public class SignedFrame extends Frame {
         super();
         this.app = app;
 
-        setTitle(app.getConfigService().getConfig().getProperty("signed.application.title"));
+        setTitle(app.getConfigService().getConfig().getProperty("signed.application.title") + " ("
+            + SignedApp.retrieveVersionFromManifest() + ")");
         addWindowListener(new WindowAdapter() {
             public void windowClosing(final WindowEvent e) {
                 e.getWindow().dispose();
