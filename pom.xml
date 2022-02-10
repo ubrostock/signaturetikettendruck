@@ -10,7 +10,7 @@
   <properties>
     <revision>1.2-SNAPSHOT</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <batik.version>1.10</batik.version>
+    <batik.version>1.14</batik.version>
   </properties>
   <build>
     <finalName>${project.name}</finalName>
