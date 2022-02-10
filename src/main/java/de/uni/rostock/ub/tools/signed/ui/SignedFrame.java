@@ -52,7 +52,6 @@ import java.util.Vector;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
-import org.apache.batik.swing.JSVGCanvas;
 import org.w3c.dom.svg.SVGDocument;
 
 import de.uni.rostock.ub.tools.signed.SignedApp;
@@ -80,7 +79,9 @@ public class SignedFrame extends Frame {
     private Panel pnlTexts;
     private Button btnDrucken;
     private List<TextField> txtLines = new Vector<>();
-    private JSVGCanvas canvas;
+
+    //alternative: org.apache.batik.swing.JSVGCanvas (bad display quality); 
+    private SignedCanvas canvas;
 
     private SignedApp app;
 
@@ -257,7 +258,7 @@ public class SignedFrame extends Frame {
         pnlTexts.setLayout(new GridBagLayout());
         pnlEtikett.add(pnlTexts);
 
-        canvas = new JSVGCanvas();
+        canvas = new SignedCanvas();
         pnlEtikett.add(canvas);
 
         btnExecTexte = new Button("Bild aktualisieren");
@@ -399,6 +400,7 @@ public class SignedFrame extends Frame {
         SVGDocument svgdoc = app.calcSVG(readTemplateKey(), readLabelData(), false);
         canvas.setDocument(svgdoc);
         canvas.validate();
+        canvas.repaint();
         pnlTexts.validate();
         btnDrucken.requestFocus();
     }
