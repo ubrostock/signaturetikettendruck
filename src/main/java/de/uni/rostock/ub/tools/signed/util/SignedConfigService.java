@@ -29,6 +29,8 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JOptionPane;
+
 import de.uni.rostock.ub.tools.signed.model.ShelfmarkObject;
 
 /**
@@ -50,23 +52,28 @@ public class SignedConfigService {
         try {
             config.load(new BufferedReader(new InputStreamReader(
                     getClass().getResourceAsStream("/signed_cfg.properties"), StandardCharsets.ISO_8859_1)));
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
+            StringBuffer msg = new StringBuffer("Prüfen Sie, ob die Datei signed_cfg.properties existiert!");
+            if(e.getMessage()!=null) {
+                msg.append("\n").append(e.getMessage());
+            }
+            System.err.println(msg.toString());
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,msg.toString(), "Fehler in der Konfiguration", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         }
         try {
             printerConfig.load(new BufferedReader(new InputStreamReader(
                     getClass().getResourceAsStream("/signed_printer.properties"), StandardCharsets.ISO_8859_1)));
-        } catch (NullPointerException npe) {
-            try {
-                // if no printer_configuration exists, load configuration from regular config
-                // file
-                printerConfig.load(new BufferedReader(new InputStreamReader(
-                        getClass().getResourceAsStream("/signed_cfg.properties"), StandardCharsets.ISO_8859_1)));
-            } catch (IOException e) {
-                e.printStackTrace();
+        } catch (IOException | NullPointerException e) {
+            StringBuffer msg = new StringBuffer("Prüfen Sie, ob die Datei signed_printer.properties existiert!");
+            if(e.getMessage()!=null) {
+                msg.append("\n").append(e.getMessage());
             }
-        } catch (IOException e) {
+            System.err.println(msg.toString());
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,msg.toString(), "Fehler in der Konfiguration", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         }
 
         // init template keys
