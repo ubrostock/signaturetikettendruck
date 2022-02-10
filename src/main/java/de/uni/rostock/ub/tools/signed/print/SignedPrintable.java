@@ -63,7 +63,7 @@ public class SignedPrintable implements Printable {
 
         g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
-        BufferedImage img = createImage(Math.round(pageFormat.getImageableWidth() * 24));
+        BufferedImage img = createImage(Math.round(pageFormat.getImageableWidth() * 36));
 
         /* Now we perform our rendering */
         g2d.drawImage((Image) img, 0, 0, (int) Math.round(pageFormat.getImageableWidth()),
@@ -77,8 +77,6 @@ public class SignedPrintable implements Printable {
 
         BufferedImageTranscoder imageTranscoder = new BufferedImageTranscoder();
         imageTranscoder.addTranscodingHint(BufferedImageTranscoder.KEY_WIDTH, width);
-        // imageTranscoder.addTranscodingHint(BufferedImageTranscoder.KEY_HEIGHT,
-        // height);
         try {
             TranscoderInput input = new TranscoderInput(svgDoc);
             imageTranscoder.transcode(input, null);
