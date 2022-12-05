@@ -8,7 +8,7 @@
   <name>signaturetikettendruck</name>
   <url>https://github.com/ubrostock/signaturetikettendruck</url>
   <properties>
-    <revision>1.3-SNAPSHOT</revision>
+    <revision>1.3.0</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <batik.version>1.16</batik.version>
   </properties>
