@@ -59,7 +59,6 @@ public class CheatSheetGenerator {
     public static void main(String[] args) {
         CheatSheetGenerator app = new CheatSheetGenerator();
         app.run();
-
     }
 
     public void run() {
@@ -67,45 +66,32 @@ public class CheatSheetGenerator {
         // Get a DOMImplementation.
         for (Object keyO : config.keySet()) {
             String key = keyO.toString();
+            String name = key.substring(key.lastIndexOf(".") + 1);
             if (key.startsWith("signed.cheatsheet.barcodes.")) {
                 SVGDocument doc = null;
-                InputStream is = null;
-                try {
-                    try {
-                        is = getClass()
-                                .getResourceAsStream("/" + config.getProperty("signed.cheatsheet.templatefile").trim());
+                try (InputStream is = getClass()
+                    .getResourceAsStream("/" + config.getProperty("signed.cheatsheet.templatefile").trim());
+                    Writer out = new OutputStreamWriter(new FileOutputStream(new File(
+                        new File(config.getProperty("signed.cheatsheet.outputdirectory")), name + ".svg")),
+                        "UTF-8")) {
+                    doc = fac.createSVGDocument(null, is);
+                    // Finally, stream out SVG to the standard output using UTF-8 encoding.
+                    DrawingOptions drawOpts = new DrawingOptions(config);
 
-                        doc = fac.createSVGDocument(null, is);
-                        // Finally, stream out SVG to the standard output using UTF-8 encoding.
-                        DrawingOptions drawOpts = new DrawingOptions(config);
-
-                        String name = key.substring(key.lastIndexOf(".") + 1);
-                        String[] data = config.getProperty(key).split(",");
-                        for (int i = 0; i < data.length; i++) {
-                            String barcode = data[i].trim();
-                            if (barcode.length() > 0) {
-                                drawEttikett(doc, i, barcode, drawOpts);
-                            }
-                        }
-
-                        // Writer out = new OutputStreamWriter(System.out, "UTF-8");
-                        Writer out = new OutputStreamWriter(new FileOutputStream(new File(
-                                new File(config.getProperty("signed.cheatsheet.outputdirectory")), name + ".svg")),
-                                "UTF-8");
-
-                        TranscoderInput input = new TranscoderInput(doc);
-                        TranscoderOutput output = new TranscoderOutput(out);
-                        Transcoder t = new SVGTranscoder();
-                        t.transcode(input, output);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (is != null) {
-                            is.close();
+                    
+                    String[] data = config.getProperty(key).split(",");
+                    for (int i = 0; i < data.length; i++) {
+                        String barcode = data[i].trim();
+                        if (barcode.length() > 0) {
+                            drawEttikett(doc, i, barcode, drawOpts);
                         }
                     }
+                    TranscoderInput input = new TranscoderInput(doc);
+                    TranscoderOutput output = new TranscoderOutput(out);
+                    Transcoder t = new SVGTranscoder();
+                    t.transcode(input, output);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         }
@@ -115,15 +101,10 @@ public class CheatSheetGenerator {
         try {
             ShelfmarkObject shelfmark = app.retrieveShelfmarkFromOPACByBarcode(barcode);
             String template = app.getConfigService().findTemplateKey(shelfmark);
-            InputStream is = null;
+            String filename = app.getConfigService().getConfig().getProperty("signed.label." + template + ".templatefile");
 
-            try {
-                String filename = app.getConfigService().getConfig()
-                        .getProperty("signed.label." + template + ".templatefile");
-                is = getClass().getResourceAsStream("/" + filename);
-
+            try (InputStream is = getClass().getResourceAsStream("/" + filename)){
                 SVGDocument docEtti = app.calcSVG(template, app.calcShelfmarkLabelData(shelfmark, template), false);
-
                 SVGElement elem = docEtti.getRootElement();
                 double x = drawOpts.getStartX() + (pos % drawOpts.getCols() * drawOpts.getOffsetX());
                 double y = drawOpts.getStartY() + (pos / drawOpts.getCols() * drawOpts.getOffsetY());
@@ -156,16 +137,9 @@ public class CheatSheetGenerator {
                         "fill:black;font-family:Arial;font-weight:bold; font-stretch: condensed;font-size:12px;");
                 doc.getRootElement().appendChild(textSignature);
 
-            } catch (Exception e) {
-
-            } finally {
-                if (is != null) {
-                    is.close();
-                }
             }
         } catch (Exception e) {
 
         }
-
     }
 }
