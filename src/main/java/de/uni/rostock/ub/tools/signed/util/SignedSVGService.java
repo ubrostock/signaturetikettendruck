@@ -81,13 +81,11 @@ public class SignedSVGService {
     }
 
     public void outputSVG(SVGDocument svgDoc, File f) {
-        try {
-            OutputStreamWriter ow = new OutputStreamWriter(new FileOutputStream(f), "UTF-8");
+        try (OutputStreamWriter ow = new OutputStreamWriter(new FileOutputStream(f), "UTF-8")) {
             TranscoderInput input = new TranscoderInput(svgDoc);
             TranscoderOutput output = new TranscoderOutput();
             Transcoder t = new SVGTranscoder();
             t.transcode(input, output);
-            ow.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
