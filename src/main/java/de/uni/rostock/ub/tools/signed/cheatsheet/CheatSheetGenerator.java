@@ -107,7 +107,7 @@ public class CheatSheetGenerator {
                 SVGDocument docEtti = app.calcSVG(template, app.calcShelfmarkLabelData(shelfmark, template), false);
                 SVGElement elem = docEtti.getRootElement();
                 double x = drawOpts.getStartX() + (pos % drawOpts.getCols() * drawOpts.getOffsetX());
-                double y = drawOpts.getStartY() + (pos / drawOpts.getCols() * drawOpts.getOffsetY());
+                double y = drawOpts.getStartY() + ((pos / drawOpts.getCols()) * drawOpts.getOffsetY());
 
                 elem.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
                 elem.setAttribute("y", Double.toString(y + 8) + drawOpts.getUnit());
