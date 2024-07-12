@@ -9,10 +9,10 @@
     <rect id="border" class="noprint" x="0.2mm" y="0.2mm" height="26.6mm" width="37.6mm" rx="3mm" ry="3mm" 
           style="fill:none;stroke:black;stroke-width:0.2mm; "/>
     <text style="fill:black;font-family:Calibri;font-size:20pt;font-weight:bold">
-        <tspan id="zeile1" x="10px" y="33px">ZC 10200</tspan>
+        <tspan id="zeile1" x="10px" y="32px">ZC 10200</tspan>
     </text>
     <text style="fill:black;font-family:Calibri;font-size:16pt;font-weight:bold">
-        <tspan id="zeile2" x="10px" y="63px">N962 I4</tspan>
-        <tspan id="zeile3" x="10px" y="88px">-2022</tspan>
+        <tspan id="zeile2" x="10px" y="62px">N962 I4</tspan>
+        <tspan id="zeile3" x="10px" y="87px">-2022</tspan>
     </text>
 </svg>
