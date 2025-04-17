@@ -67,7 +67,7 @@ public class SignedPrintable implements Printable {
 
         /* Now we perform our rendering */
         g2d.drawImage((Image) img, 0, 0, (int) Math.round(pageFormat.getImageableWidth()),
-                (int) Math.round(pageFormat.getImageableHeight()), null);
+            (int) Math.round(pageFormat.getImageableHeight()), null);
 
         /* tell the caller that this page is part of the printed document */
         return PAGE_EXISTS;

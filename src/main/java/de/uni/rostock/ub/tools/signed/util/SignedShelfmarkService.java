@@ -74,7 +74,7 @@ public class SignedShelfmarkService {
                 System.out.print("'" + signatureString + "' ");
 
                 String patternString = config.getConfig()
-                        .getProperty("signed.label." + template + ".pattern." + k + "." + id);
+                    .getProperty("signed.label." + template + ".pattern." + k + "." + id);
                 Pattern pattern = Pattern.compile(patternString);
                 Matcher matcher = pattern.matcher(signatureString);
                 if (matcher.find()) {

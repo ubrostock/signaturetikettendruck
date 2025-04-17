@@ -56,10 +56,14 @@ public class SignedCanvas extends Canvas {
 
             BufferedImage bi = imageTranscoder.getBufferedImage();
             if ((float) bi.getWidth() / this.getWidth() >= (float) bi.getHeight() / this.getHeight()) {
-                g.drawImage(bi, 0, 0, this.getWidth(), Math.round((float) this.getWidth() * bi.getHeight() / bi.getWidth()),
+                g.drawImage(bi, 0, 0,
+                    this.getWidth(),
+                    Math.round((float) this.getWidth() * bi.getHeight() / bi.getWidth()),
                     this);
             } else {
-                g.drawImage(bi, 0, 0, Math.round((float) this.getHeight() * bi.getWidth() / bi.getHeight()), this.getHeight(),
+                g.drawImage(bi, 0, 0,
+                    Math.round((float) this.getHeight() * bi.getWidth() / bi.getHeight()),
+                    this.getHeight(),
                     this);
             }
         }

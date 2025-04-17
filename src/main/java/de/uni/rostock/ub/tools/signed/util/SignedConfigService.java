@@ -54,12 +54,13 @@ public class SignedConfigService {
             config.load(br);
         } catch (IOException | NullPointerException e) {
             StringBuffer msg = new StringBuffer("Prüfen Sie, ob die Datei signed_cfg.properties existiert!");
-            if(e.getMessage()!=null) {
+            if (e.getMessage() != null) {
                 msg.append("\n").append(e.getMessage());
             }
             System.err.println(msg.toString());
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,msg.toString(), "Fehler in der Konfiguration", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, msg.toString(), "Fehler in der Konfiguration",
+                JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -67,12 +68,13 @@ public class SignedConfigService {
             printerConfig.load(br);
         } catch (IOException | NullPointerException e) {
             StringBuffer msg = new StringBuffer("Prüfen Sie, ob die Datei signed_printer.properties existiert!");
-            if(e.getMessage()!=null) {
+            if (e.getMessage() != null) {
                 msg.append("\n").append(e.getMessage());
             }
             System.err.println(msg.toString());
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,msg.toString(), "Fehler in der Konfiguration", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, msg.toString(), "Fehler in der Konfiguration",
+                JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 
@@ -139,7 +141,7 @@ public class SignedConfigService {
      */
     public String findTemplateKey(ShelfmarkObject shelfmark) {
         System.out.println("Shelfmark: " + shelfmark.toLocationAndSignatureString());
-        
+
         for (String k : templateKeys.keySet()) {
             String pattern = config.getProperty("signed.template.pattern." + k + "." + templateKeys.get(k));
             if (shelfmark.toLocationAndSignatureString().matches(pattern)) {

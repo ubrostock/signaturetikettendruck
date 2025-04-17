@@ -58,19 +58,19 @@ public class SignedPrintService {
         PrintService psOutput = null;
         PrintService[] prservices = PrintServiceLookup.lookupPrintServices(null, null);
         Properties printerConfig = config.getPrinterConfig();
-        List<String>printers = new ArrayList<String>();
+        List<String> printers = new ArrayList<String>();
         String printerName = printerConfig.getProperty("signed.printer.name").trim();
-        for(String s : printerName.split("\\,")) {
-        	printers.add(s.trim());
+        for (String s : printerName.split("\\,")) {
+            printers.add(s.trim());
         }
 
-        outer: for(String printer: printers) {
+        outer: for (String printer : printers) {
             for (PrintService ps : prservices) {
-        		if (ps.getName().contains(printer)) {
-        			psOutput = ps;
-        			break outer;
-        		}
-        	}
+                if (ps.getName().contains(printer)) {
+                    psOutput = ps;
+                    break outer;
+                }
+            }
         }
 
         if (psOutput == null) {
@@ -82,7 +82,8 @@ public class SignedPrintService {
                 out.append("\n" + ps.getName() + ", ");
             }
             System.err.println(out);
-            JOptionPane.showMessageDialog(null, msg + "\n\n" + out.toString(), "Druckerfehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, msg + "\n\n" + out.toString(), "Druckerfehler",
+                JOptionPane.ERROR_MESSAGE);
         } else {
             try {
 
@@ -90,28 +91,28 @@ public class SignedPrintService {
                 PrintRequestAttributeSet prAttrSet = new HashPrintRequestAttributeSet();
 
                 if ("portrait"
-                        .equals(printerConfig.getProperty("signed.printer.page.orientation").trim().toLowerCase())) {
+                    .equals(printerConfig.getProperty("signed.printer.page.orientation").trim().toLowerCase())) {
                     prAttrSet.add(OrientationRequested.PORTRAIT);
                 }
                 if ("landscape"
-                        .equals(printerConfig.getProperty("signed.printer.page.orientation").trim().toLowerCase())) {
+                    .equals(printerConfig.getProperty("signed.printer.page.orientation").trim().toLowerCase())) {
                     prAttrSet.add(OrientationRequested.LANDSCAPE);
                 }
                 // Paper; A4 borderless -> needs to be configured
                 float pageWidth = Float.parseFloat(printerConfig.getProperty("signed.printer.page.width").trim());
                 float pageHeight = Float.parseFloat(printerConfig.getProperty("signed.printer.page.height").trim());
                 float pageBorderLeft = Float
-                        .parseFloat(printerConfig.getProperty("signed.printer.page.border.left").trim());
+                    .parseFloat(printerConfig.getProperty("signed.printer.page.border.left").trim());
                 float pageBorderRight = Float
-                        .parseFloat(printerConfig.getProperty("signed.printer.page.border.right").trim());
+                    .parseFloat(printerConfig.getProperty("signed.printer.page.border.right").trim());
                 float pageBorderTop = Float
-                        .parseFloat(printerConfig.getProperty("signed.printer.page.border.top").trim());
+                    .parseFloat(printerConfig.getProperty("signed.printer.page.border.top").trim());
                 float pageBorderBottom = Float
-                        .parseFloat(printerConfig.getProperty("signed.printer.page.border.bottom").trim());
+                    .parseFloat(printerConfig.getProperty("signed.printer.page.border.bottom").trim());
 
                 prAttrSet.add(new MediaPrintableArea(pageBorderLeft, pageBorderTop,
-                        (pageWidth - pageBorderLeft - pageBorderRight), (pageHeight - pageBorderTop - pageBorderBottom),
-                        MediaPrintableArea.MM));
+                    (pageWidth - pageBorderLeft - pageBorderRight), (pageHeight - pageBorderTop - pageBorderBottom),
+                    MediaPrintableArea.MM));
 
                 if (svg != null) {
                     // working (print using buffered image):

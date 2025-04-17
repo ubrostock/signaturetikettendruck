@@ -90,7 +90,8 @@ public class SignedApp {
     }
 
     public String retrieveLoanInfo(String loanIndicator) {
-        return Objects.requireNonNullElse(configService.getConfig().getProperty("signed.loanindicator." + loanIndicator), "");
+        return Objects.requireNonNullElse(
+            configService.getConfig().getProperty("signed.loanindicator." + loanIndicator), "");
     }
 
     public void printShelfmarkLabel(String template, Map<String, String> labelData) {

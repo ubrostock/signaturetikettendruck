@@ -29,7 +29,7 @@ import java.util.Objects;
  *
  */
 public record ShelfmarkObject(String signature, String location, String loanindicator) {
-    
+
     public ShelfmarkObject(String signature, String location, String loanindicator) {
         this.signature = Objects.requireNonNullElse(signature, "");
         this.location = Objects.requireNonNullElse(location, "");
