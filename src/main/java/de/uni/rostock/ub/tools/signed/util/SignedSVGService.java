@@ -52,7 +52,7 @@ public class SignedSVGService {
 
     public void updateSVG(SVGDocument svg, String template, Map<String, String> texte) {
         //clear fields in SVG
-        for (String key : config.findTextKeys(template).values()) {
+        for (String key : config.findTextKeys(template)) {
             if (svg.getElementById(key) == null) {
                 // do nothing
             } else {
@@ -70,7 +70,7 @@ public class SignedSVGService {
         }
 
         //delete unfilled / empty text nodes
-        for (String key : config.findTextKeys(template).values()) {
+        for (String key : config.findTextKeys(template)) {
             if (!texte.containsKey(key) || texte.get(key).trim().length() == 0) {
                 Element e = svg.getElementById(key);
                 if (e != null) {

@@ -22,6 +22,7 @@ package de.uni.rostock.ub.tools.signed.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,12 +46,12 @@ public class SignedShelfmarkService {
 
     public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject shelfmark, String template) {
         Map<String, String> labelData = new HashMap<>();
-        Map<String, String> patternKeys = config.findTextKeys(template);
+        SortedSet<String> patternKeys = config.findTextKeys(template);
         String cfgKeyRegex = "signed.label." + template + ".regex";
         Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
         Matcher m = p.matcher(shelfmark.toLocationAndSignatureString());
         if (m.find()) {
-            for (String name : patternKeys.values()) {
+            for (String name : patternKeys) {
                 try {
                     String s = m.group(name);
                     labelData.put(name, Objects.requireNonNullElse(s, ""));
