@@ -47,51 +47,18 @@ public class SignedShelfmarkService {
         Map<String, String> labelData = new HashMap<>();
         Map<String, String> patternKeys = config.findTextKeys(template);
         String cfgKeyRegex = "signed.label." + template + ".regex";
-        if (config.getConfig().keySet().contains(cfgKeyRegex)) {
-            // new variant: regex with named groups
-            Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
-            Matcher m = p.matcher(shelfmark.toLocationAndSignatureString());
-            if (m.find()) {
-                for (String name : patternKeys.values()) {
-                    try {
-                        String s = m.group(name);
-                        labelData.put(name, Objects.requireNonNullElse(s, ""));
-
-                    } catch (IllegalArgumentException | IllegalStateException e) {
-                        // group with given name does not exist
-                        labelData.put(name, "");
-                    }
+        Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
+        Matcher m = p.matcher(shelfmark.toLocationAndSignatureString());
+        if (m.find()) {
+            for (String name : patternKeys.values()) {
+                try {
+                    String s = m.group(name);
+                    labelData.put(name, Objects.requireNonNullElse(s, ""));
+                } catch (IllegalArgumentException | IllegalStateException e) {
+                    // group with given name does not exist
+                    labelData.put(name, "");
                 }
             }
-        } else {
-            // old variant: multiple pattern for each line
-            String signatureString = shelfmark.toLocationAndSignatureString();
-            for (String k : patternKeys.keySet()) {
-                String id = patternKeys.get(k);
-                System.out.println();
-                System.out.print("> " + id + ": ");
-                System.out.print("'" + signatureString + "' ");
-
-                String patternString = config.getConfig()
-                    .getProperty("signed.label." + template + ".pattern." + k + "." + id);
-                Pattern pattern = Pattern.compile(patternString);
-                Matcher matcher = pattern.matcher(signatureString);
-                if (matcher.find()) {
-                    String result = matcher.group();
-                    System.out.print("--> '" + result + "'");
-                    if (matcher.start() == 0) {
-                        signatureString = signatureString.substring(matcher.end());
-                    }
-                    if (!id.equals("_ignore")) {
-                        labelData.put(id, result);
-                    }
-                } else {
-                    if (!id.equals("_ignore")) {
-                        labelData.put(id, "");
-                    }
-                }
-            }
-            System.out.println();
         }
         modifyLabels(labelData, template);
         return labelData;

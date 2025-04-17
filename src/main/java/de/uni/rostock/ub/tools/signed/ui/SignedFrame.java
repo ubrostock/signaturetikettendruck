@@ -46,7 +46,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.Vector;
 
 import javax.print.PrintService;
@@ -354,22 +354,19 @@ public class SignedFrame extends Frame {
         pnlTexts.removeAll();
         txtLines.clear();
 
-        SortedMap<String, String> textKeys = app.getConfigService().findTextKeys(readTemplateKey());
+        SortedSet<String> textKeys = app.getConfigService().findTextKeys(readTemplateKey());
         Map<String, String> labelData = app.calcShelfmarkLabelData(readShelfmark(), readTemplateKey());
 
         int pos = 0;
-        for (String id : textKeys.values()) {
-            if (!id.equals("_ignore")) {
-
-                Label lbl = new Label(app.retrieveLabelFromSVG(svg, id) + ":");
-                pnlTexts.add(lbl, new GridBagConstraints(0, ++pos, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                    GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-                TextField txt = new TextField(labelData.get(id));
-                txt.setName(id);
-                pnlTexts.add(txt, new GridBagConstraints(1, pos, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                    GridBagConstraints.HORIZONTAL, new Insets(4, 4, 4, 4), 0, 0));
-                txtLines.add(txt);
-            }
+        for (String id : textKeys) {
+            Label lbl = new Label(app.retrieveLabelFromSVG(svg, id) + ":");
+            pnlTexts.add(lbl, new GridBagConstraints(0, ++pos, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+            TextField txt = new TextField(labelData.get(id));
+            txt.setName(id);
+            pnlTexts.add(txt, new GridBagConstraints(1, pos, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(4, 4, 4, 4), 0, 0));
+            txtLines.add(txt);
         }
         doLayout();
         pnlTexts.doLayout();
