@@ -82,8 +82,8 @@ public class CheatSheetGenerator {
                     String[] data = config.getProperty(key).split(",");
                     for (int i = 0; i < data.length; i++) {
                         String barcode = data[i].trim();
-                        if (barcode.length() > 0) {
-                            drawEttikett(doc, i, barcode, drawOpts);
+                        if (!barcode.isBlank()) {
+                            drawEttikett(doc, i, barcode.trim(), drawOpts);
                         }
                     }
                     TranscoderInput input = new TranscoderInput(doc);
@@ -139,7 +139,7 @@ public class CheatSheetGenerator {
 
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }
