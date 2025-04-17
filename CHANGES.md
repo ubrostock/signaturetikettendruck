@@ -1,33 +1,33 @@
-Migrationen für Signaturetikettendruck
-======================================
+Changelog und Migrationsanleitung für Signaturetikettendruck
+============================================================
 
 
 Migration auf Version 1.2.1 (Januar 2020)
-=========================================
+-----------------------------------------
 Das Property "signed.application.1stbarcode" wurde hinzugefügt,
 damit lässt sich der Barcode, der beim Programmstart automatisch angezeigt wird, konfigurieren.
 
 
 Migration auf Version 1.2.0 (März 2018)
-=======================================
+---------------------------------------
 
-Konfiguration
--------------
+### Konfiguration
 Für die Ermittlung der Textbausteine auf dem Etikett sollten jetzt "Named Groups" 
-(Feature in Java Regex) verwendet werden. Dafür wurde ein neues Property *.regex 
+(Feature in Java Regex) verwendet werden. Dafür wurde ein neues Property `*.regex`
 für jedes Template eingeführt, welches den kompletten regulären Ausdruck enthält.
 Früher wurden auf die Zeichenkette schrittweise von links einzelne Pattern angewendet, 
 um dadurch die einzelnen Teilzeichenketten für die Ersetzung in der SVG-Datei zu ermitteln.
 
-Die Bezeichnungen der Names Groups dürfen keinen "_" enthalten. 
+Die Bezeichnungen der Names Groups dürfen keinen `_` enthalten. 
 Deshalb müssen auch die ID-Attribute in den SVG-Dateien umbenannt werden. 
 
 Außerdem wird jetzt als Eingabe für den Regulären Ausdruck auch die komplette Zeichenkette
 in der Form "!Standort!Signatur" verwendet. Dadurch können auch die Standortinformationen auf 
 dem Etikett gedruckt werden. Wir diese für das Etikett nicht, kann sie über den Audruck 
-"([!].*[!])" identifziert und ausgeschlossen werden.  
+`([!].*[!])` identifziert und ausgeschlossen werden.  
 
 Alt:
+```
 signed.label.rvk.pattern.01.zeile_1=^[a-zA-Z]+
 signed.label.rvk.pattern.02._ignore=\\s
 signed.label.rvk.pattern.03.zeile_2=^[0-9]+([a-zA-Z0-9]+)?
@@ -37,39 +37,39 @@ signed.label.rvk.pattern.06._ignore=\\s
 signed.label.rvk.pattern.07.zeile_4=^[-]?[^\\s-]+
 signed.label.rvk.pattern.08._ignore=\\s
 signed.label.rvk.pattern.09.zeile_5=.+ 
+```
 
 Neu:
+```
 signed.label.rvk.regex=^([!].*[!])(?<zeile1>[a-zA-Z]+)\\s(?<zeile2>[0-9]+([a-zA-Z0-9]+)?)(\\s?(?<zeile3>[-]?[^\\s-]+))?(\\s?(?<zeile4>[-]?[^\\s-]+))?(\\s?(?<zeile5>.+))?
-
-Die Named Groups werden wie folgt definiert: "(?<name>...)".
-Für die Umstellung werden die alten regulären Ausdrücke aneinander gefügt und die Named Groups 
-entsprechend ausgezeichnet.
-Ggf müssen die letzten Zeilen noch optional gekennezeichnet werden: "(...)?", 
+```
+Die Named Groups werden wie folgt definiert: `(?<name>...)`.
+Für die Umstellung werden die alten regulären Ausdrücke aneinander gefügt und die Named Groups entsprechend ausgezeichnet.
+Ggf müssen die letzten Zeichen noch als **optional** gekennzeichnet werden: `(...)?`, 
 da der gesamte reguläre Ausdruck auf die Signatur angewendet wird.
 
-Die Konfiguration via *.pattern Properties wird in einer der nächsten Versionen entfernt.
+Die Konfiguration via `*.pattern` Properties wird in einer der nächsten Versionen entfernt.
 
 
-SVG-Dateien
------------
+### SVG-Dateien
 1. Elemente, die nicht gedruckt werden (z.B. Ränder), sollten mit der Klasse 
-"noprint" gekennzeichnet werden.
-Bisher wurden diese Elemente mit ihrer ID im Property *.noprint eingetragen.
+`noprint` gekennzeichnet werden.
+Bisher wurden diese Elemente mit ihrer ID im Property `*.noprint` eingetragen.
 Diese Funktionalität wird in einer nächsten Version entfernt.
 
 2. Die Teilzeichenketten können mit dem Attribut aria-label ausgezeichnet werden.
 Dieses Attribut wird dann für die Anzeige des Feldes in der Eingabemaske verwendet.
-Fehlt das Attribut wird wie bisher die ID des Elements für die Anzeige verwendet.
+Fehlt das Attribut wird, wie bisher, die ID des Elements für die Anzeige verwendet.
 
 
 
 Migration auf Version 1.1.1 (Mai 2015)
-=====================================
+--------------------------------------
 Ersetzen der Konfigurationsdatei (signed_cfg.properties)
 
 
 Migration auf Version 1.1.0 (April 2015)
-========================================
+----------------------------------------
 
 Auf Grund von Änderungen an den Etiketten für die Lehrerbildungsbibliothek müssen
 wir die Anwendung aktualisieren.
