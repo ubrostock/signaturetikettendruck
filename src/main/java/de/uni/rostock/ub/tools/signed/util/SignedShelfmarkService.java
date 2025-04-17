@@ -21,6 +21,7 @@ package de.uni.rostock.ub.tools.signed.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,16 +52,14 @@ public class SignedShelfmarkService {
             Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
             Matcher m = p.matcher(signature.toLocationAndSignatureString());
             if (m.find()) {
-
                 for (String name : patternKeys.values()) {
                     try {
                         String s = m.group(name);
-                        labelData.put(name, s == null ? "" : s);
+                        labelData.put(name, Objects.requireNonNullElse(s, ""));
 
                     } catch (IllegalArgumentException | IllegalStateException e) {
                         // group with given name does not exist
                         labelData.put(name, "");
-
                     }
                 }
             }

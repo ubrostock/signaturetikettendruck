@@ -391,8 +391,8 @@ public class SignedFrame extends Frame {
 
     private ShelfmarkObject readShelfmark() {
         return new ShelfmarkObject(
-            txtLocation.getText().trim(),
             txtSignatur.getText().trim(),
+            txtLocation.getText().trim(),
             txtLoanindicator.getName());
     }
 
