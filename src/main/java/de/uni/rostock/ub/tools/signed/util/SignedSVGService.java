@@ -122,18 +122,6 @@ public class SignedSVGService {
             doc = fac.createSVGDocument(null, is);
             updateSVG(doc, template, texts);
             if (print) {
-                // delete SVG elements, with id (defined in property)
-                if (config.getConfig().getProperty("signed.label." + template + ".noprint") != null) {
-                    String[] noPrintIDs = config.getConfig().getProperty("signed.label." + template + ".noprint")
-                        .split(",");
-                    for (String id : noPrintIDs) {
-                        Element e = doc.getElementById(id.trim());
-                        if (e != null) {
-                            e.getParentNode().removeChild(e);
-                        }
-                    }
-                }
-
                 // delete all SVG elements with attribute class="noprint"
                 // iterate from last to first, that the counter keeps valid if an element was
                 // deleted
