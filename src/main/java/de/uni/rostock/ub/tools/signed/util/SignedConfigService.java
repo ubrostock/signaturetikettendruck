@@ -133,6 +133,18 @@ public class SignedConfigService {
         return textKeys;
     }
 
+    public SortedMap<String, String> findReplacements(String template, String line) {
+        SortedMap<String, String> result = new TreeMap<String, String>();
+        String cfgKeyPrefix = "signed.label." + template + ".line." + line + ".replace.";
+        for (Object k : config.keySet()) {
+            String key = k.toString();
+            if (key.startsWith(cfgKeyPrefix)) {
+                result.put(key.substring(cfgKeyPrefix.length()), config.getProperty(key).trim());
+            }
+        }
+        return result;
+    }
+
     /**
      * 
      * @param shelfmark
