@@ -28,11 +28,11 @@ import java.util.Objects;
  * @author Robert Stephan, Rostock University Library
  *
  */
-public record ShelfmarkObject(String signature, String location, String loanindicator) {
+public record ShelfmarkObject(String location, String signature, String loanindicator) {
 
-    public ShelfmarkObject(String signature, String location, String loanindicator) {
-        this.signature = Objects.requireNonNullElse(signature, "");
+    public ShelfmarkObject(String location, String signature, String loanindicator) {
         this.location = Objects.requireNonNullElse(location, "");
+        this.signature = Objects.requireNonNullElse(signature, "");
         this.loanindicator = Objects.requireNonNullElse(loanindicator, "");
     }
 

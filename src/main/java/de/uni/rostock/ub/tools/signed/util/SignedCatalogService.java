@@ -96,24 +96,24 @@ public class SignedCatalogService {
             Node n2;
             XPathExpression expr2;
 
-            expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.signature"));
-            n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
-            String signature = n2 != null ? n2.getTextContent() : "";
-
             expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.location"));
             n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
             String location = n2 != null ? n2.getTextContent() : "";
+
+            expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.signature"));
+            n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
+            String signature = n2 != null ? n2.getTextContent() : "";
 
             expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.loanindicator"));
             n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
             String loanindicator = n2 != null ? n2.getTextContent() : "";
 
-            return new ShelfmarkObject(signature, location, loanindicator);
+            return new ShelfmarkObject(location, signature, loanindicator);
 
         } else {
             System.err.println("Keine Signatur gefunden !!!");
+            return new ShelfmarkObject("", "", "");
         }
-        return new ShelfmarkObject("", "", "");
     }
 
 }
