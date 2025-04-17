@@ -50,7 +50,6 @@ public class SignedCatalogService {
     }
 
     public ShelfmarkObject retrieveShelfmarkObjectFromOPACWithBarcode(String barcode) throws Exception {
-        ShelfmarkObject result = new ShelfmarkObject();
         URL url = new URL(config.getConfig().getProperty("signed.sru.url").replace("${barcode}", barcode));
         System.out.println("KatalogSuche: " + url.toString());
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -95,34 +94,32 @@ public class SignedCatalogService {
             }
         });
         XPathExpression expr = xpath
-                .compile(config.getConfig().getProperty("signed.xpath.object").replace("${barcode}", barcode));
+            .compile(config.getConfig().getProperty("signed.xpath.object").replace("${barcode}", barcode));
         // NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
         Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
 
         if (node != null) {
-            Node n2 = null;
-            XPathExpression expr2 = null;
-            ;
+            Node n2;
+            XPathExpression expr2;
+
             expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.signature"));
             n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
-            if (n2 != null) {
-                result.setSignature(n2.getTextContent());
-            }
+            String signature = n2 != null ? n2.getTextContent() : "";
 
             expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.location"));
             n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
-            if (n2 != null) {
-                result.setLocation(n2.getTextContent());
-            }
+            String location = n2 != null ? n2.getTextContent() : "";
+
             expr2 = xpath.compile(config.getConfig().getProperty("signed.xpath.object.loanindicator"));
             n2 = (Node) expr2.evaluate(node, XPathConstants.NODE);
-            if (n2 != null) {
-                result.setLoanindicator(n2.getTextContent());
-            }
+            String loanindicator = n2 != null ? n2.getTextContent() : "";
+
+            return new ShelfmarkObject(signature, location, loanindicator);
+
         } else {
             System.err.println("Keine Signatur gefunden !!!");
         }
-        return result;
+        return new ShelfmarkObject("", "", "");
     }
 
 }

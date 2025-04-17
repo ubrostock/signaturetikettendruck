@@ -122,7 +122,7 @@ public class CheatSheetGenerator {
                 doc.getRootElement().appendChild(textBarcode);
 
                 Element textLocation = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
-                textLocation.appendChild(doc.createTextNode("!" + shelfmark.getLocation() + "!"));
+                textLocation.appendChild(doc.createTextNode("!" + shelfmark.location() + "!"));
                 textLocation.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
                 textLocation.setAttribute("y", Double.toString(y + 3.5) + drawOpts.getUnit());
                 textLocation.setAttribute("style",
@@ -130,7 +130,7 @@ public class CheatSheetGenerator {
                 doc.getRootElement().appendChild(textLocation);
 
                 Element textSignature = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
-                textSignature.appendChild(doc.createTextNode(shelfmark.getSignature()));
+                textSignature.appendChild(doc.createTextNode(shelfmark.signature()));
                 textSignature.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
                 textSignature.setAttribute("y", Double.toString(y + 7) + drawOpts.getUnit());
                 textSignature.setAttribute("style",

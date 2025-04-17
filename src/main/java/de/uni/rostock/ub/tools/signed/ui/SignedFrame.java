@@ -308,14 +308,14 @@ public class SignedFrame extends Frame {
             txtBarcode.setText(txtBarcode.getText().toUpperCase());
             txtSignatur.setText("");
             ShelfmarkObject signObject = app.retrieveShelfmarkFromOPACByBarcode(txtBarcode.getText());
-            txtSignatur.setText(signObject.getSignature());
-            txtLoanindicator.setName(signObject.getLoanindicator());
-            txtLoanindicator.setText(" @ " + signObject.getLoanindicator());
-            String loanInfo = app.retrieveLoanInfo(signObject.getLoanindicator());
+            txtSignatur.setText(signObject.signature());
+            txtLoanindicator.setName(signObject.loanindicator());
+            txtLoanindicator.setText(" @ " + signObject.loanindicator());
+            String loanInfo = app.retrieveLoanInfo(signObject.loanindicator());
             if (loanInfo != null) {
-                txtLoanindicator.setText(" @ " + signObject.getLoanindicator() + "   [" + loanInfo + "]");
+                txtLoanindicator.setText(" @ " + signObject.loanindicator() + "   [" + loanInfo + "]");
             }
-            txtLocation.setText(signObject.getLocation());
+            txtLocation.setText(signObject.location());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -379,12 +379,10 @@ public class SignedFrame extends Frame {
     }
 
     private ShelfmarkObject readShelfmark() {
-        ShelfmarkObject sgn = new ShelfmarkObject();
-        sgn.setLocation(txtLocation.getText().trim());
-        sgn.setSignature(txtSignatur.getText().trim());
-        sgn.setLoanindicator(txtLoanindicator.getName());
-
-        return sgn;
+        return new ShelfmarkObject(
+            txtLocation.getText().trim(),
+            txtSignatur.getText().trim(),
+            txtLoanindicator.getName());
     }
 
     private String readTemplateKey() {
