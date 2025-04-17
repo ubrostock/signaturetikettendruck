@@ -93,6 +93,23 @@ public class SignedShelfmarkService {
             }
             System.out.println();
         }
+        modifyLabels(labelData, template);
         return labelData;
+    }
+
+    /**
+     * updates the label values with replacements that are defined in config.properties
+     * signed.label.$template$.line.$line$.replace.$key$=$value$
+     * 
+     * @param labelData
+     * @param template
+     */
+    private void modifyLabels(Map<String, String> labelData, String template) {
+        for (Map.Entry<String, String> label : labelData.entrySet()) {
+            Map<String, String> replacements = config.findReplacements(template, label.getKey());
+            for (Map.Entry<String, String> replacement : replacements.entrySet()) {
+                label.setValue(label.getValue().replace(replacement.getKey(), replacement.getValue()));
+            }
+        }
     }
 }
