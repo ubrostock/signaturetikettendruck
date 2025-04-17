@@ -81,8 +81,8 @@ public class CheatSheetGenerator {
                     String[] data = config.getProperty(key).split(",");
                     for (int i = 0; i < data.length; i++) {
                         String barcode = data[i].trim();
-                        if (!barcode.isBlank()) {
-                            drawEttikett(doc, i, barcode.trim(), drawOpts);
+                        if (!barcode.isEmpty()) {
+                            drawEttikett(doc, i, barcode, drawOpts);
                         }
                     }
                     TranscoderInput input = new TranscoderInput(doc);
