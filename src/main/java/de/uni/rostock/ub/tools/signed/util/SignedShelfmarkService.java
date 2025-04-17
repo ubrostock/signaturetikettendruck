@@ -43,14 +43,14 @@ public class SignedShelfmarkService {
         this.config = config;
     }
 
-    public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject signature, String template) {
+    public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject shelfmark, String template) {
         Map<String, String> labelData = new HashMap<>();
         Map<String, String> patternKeys = config.findTextKeys(template);
         String cfgKeyRegex = "signed.label." + template + ".regex";
         if (config.getConfig().keySet().contains(cfgKeyRegex)) {
             // new variant: regex with named groups
             Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
-            Matcher m = p.matcher(signature.toLocationAndSignatureString());
+            Matcher m = p.matcher(shelfmark.toLocationAndSignatureString());
             if (m.find()) {
                 for (String name : patternKeys.values()) {
                     try {
@@ -65,7 +65,7 @@ public class SignedShelfmarkService {
             }
         } else {
             // old variant: multiple pattern for each line
-            String signatureString = signature.toLocationAndSignatureString();
+            String signatureString = shelfmark.toLocationAndSignatureString();
             for (String k : patternKeys.keySet()) {
                 String id = patternKeys.get(k);
                 System.out.println();
