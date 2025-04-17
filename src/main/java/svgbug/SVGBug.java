@@ -1,7 +1,9 @@
 package svgbug;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -17,13 +19,15 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 public class SVGBug {
 
     public void run() throws Exception {
-        TranscoderInput ti = new TranscoderInput(getClass().getResourceAsStream("svgbug_tspan.svg"));
-        TranscoderOutput to = new TranscoderOutput(new FileOutputStream(new File("C:\\temp\\svgbug_tspan.png")));
+        try (InputStream is = getClass().getResourceAsStream("svgbug_tspan.svg");
+            OutputStream ous = Files.newOutputStream(Paths.get("C:\\temp\\svgbug_tspan.png"))) {
+            TranscoderInput ti = new TranscoderInput(is);
+            TranscoderOutput to = new TranscoderOutput(ous);
 
-        PNGTranscoder conv = new PNGTranscoder();
-        conv.addTranscodingHint(PNGTranscoder.KEY_WIDTH, 250f);
-        conv.transcode(ti, to);
-
+            PNGTranscoder conv = new PNGTranscoder();
+            conv.addTranscodingHint(PNGTranscoder.KEY_WIDTH, 250f);
+            conv.transcode(ti, to);
+        }
     }
 
     public static void main(String[] args) {

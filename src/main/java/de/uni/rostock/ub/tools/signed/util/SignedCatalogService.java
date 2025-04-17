@@ -56,15 +56,9 @@ public class SignedCatalogService {
         builderFactory.setNamespaceAware(true);
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
-        Document doc = null;
-        InputStream is = null;
-        try {
-            is = url.openStream();
+        Document doc;
+        try (InputStream is = url.openStream()) {
             doc = builder.parse(is);
-        } finally {
-            if (is != null) {
-                is.close();
-            }
         }
         if (doc == null) {
             throw new NullPointerException("Katalogisat konnte nicht gelesen werden");
@@ -73,7 +67,7 @@ public class SignedCatalogService {
         XPath xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(new NamespaceContext() {
 
-            @SuppressWarnings("rawtypes")
+            @SuppressWarnings({ "rawtypes", "unchecked" })
             @Override
             public Iterator getPrefixes(String namespaceURI) {
                 return null;
