@@ -30,10 +30,10 @@ import java.util.Objects;
  */
 public record ShelfmarkObject(String location, String signature, String loanindicator) {
 
-    public ShelfmarkObject(String location, String signature, String loanindicator) {
-        this.location = Objects.requireNonNullElse(location, "");
-        this.signature = Objects.requireNonNullElse(signature, "");
-        this.loanindicator = Objects.requireNonNullElse(loanindicator, "");
+    public ShelfmarkObject {
+        location = Objects.requireNonNullElse(location, "");
+        signature = Objects.requireNonNullElse(signature, "");
+        loanindicator = Objects.requireNonNullElse(loanindicator, "");
     }
 
     public String toLocationAndSignatureString() {
