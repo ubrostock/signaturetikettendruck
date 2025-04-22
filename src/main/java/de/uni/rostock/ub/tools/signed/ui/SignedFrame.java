@@ -149,8 +149,7 @@ public class SignedFrame extends Frame {
                         printEtikett();
                     }
                 }
-
-            };
+            }
         });
         txtBarcode.addMouseListener(new MouseAdapter() {
             @Override

@@ -111,7 +111,8 @@ public class SignedPrintService {
                     .parseFloat(printerConfig.getProperty("signed.printer.page.border.bottom").trim());
 
                 prAttrSet.add(new MediaPrintableArea(pageBorderLeft, pageBorderTop,
-                    (pageWidth - pageBorderLeft - pageBorderRight), (pageHeight - pageBorderTop - pageBorderBottom),
+                    pageWidth - pageBorderLeft - pageBorderRight,
+                    pageHeight - pageBorderTop - pageBorderBottom,
                     MediaPrintableArea.MM));
 
                 if (svg != null) {
