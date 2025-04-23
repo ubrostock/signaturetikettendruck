@@ -7,10 +7,10 @@
  		Berechnung aus width und height (mm -> pixel): x * 96 / 25.4  -->
     <rect id="border" class="noprint" x="0.2mm" y="0.2mm" width="29.6mm" height="49.6mm" rx="3mm" ry="3mm" 
           style="fill:none;stroke:black;stroke-width:0.2mm;" />
-    <text text-anchor="middle" alignment-baseline="central">
-        <tspan id="zeile1" aria-label="Zeile 1" x="55px" y="40px" style="fill:black;font-family:Arial;font-size:10pt;font-weight:bold">SozPaed</tspan>
-        <tspan id="zeile2" aria-label="Zeile 2" x="55px" y="80px" style="fill:black;font-family:Arial;font-size:20pt;font-weight:bold">79.16</tspan>
-        <tspan id="zeile3" aria-label="Zeile 3" x="55px" y="120px" style="fill:black;font-family:Arial;font-size:20pt;font-weight:bold">352</tspan>
-        <tspan id="zeile4" aria-label="Zeile 4" x="55px" y="160px" style="fill:black;font-family:Arial;font-size:12pt;font-weight:normal">&lt;1&gt;</tspan>
+    <text text-anchor="middle" style="fill:black;font-family:Arial;">
+        <tspan id="zeile1" aria-label="Zeile 1" x="55px" y="40px" style="font-size:10pt;font-weight:bold">SozPaed</tspan>
+        <tspan id="zeile2" aria-label="Zeile 2" x="55px" y="80px" style="font-size:20pt;font-weight:bold">79.16</tspan>
+        <tspan id="zeile3" aria-label="Zeile 3" x="55px" y="120px" style="font-size:20pt;font-weight:bold">352</tspan>
+        <tspan id="zeile4" aria-label="Zeile 4" x="55px" y="160px" style="font-size:12pt;font-weight:normal">&lt;1&gt;</tspan>
     </text>
 </svg>
