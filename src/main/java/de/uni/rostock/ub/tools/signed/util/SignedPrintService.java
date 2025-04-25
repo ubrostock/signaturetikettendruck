@@ -22,6 +22,7 @@ package de.uni.rostock.ub.tools.signed.util;
 import java.awt.print.Printable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.print.DocFlavor;
@@ -115,9 +116,12 @@ public class SignedPrintService {
                     pageHeight - pageBorderTop - pageBorderBottom,
                     MediaPrintableArea.MM));
 
+                int rotation = Integer.parseInt(
+                        Objects.requireNonNullElse(printerConfig.getProperty("signed.printer.rotation"), "0"));
+                    
                 if (svg != null) {
                     // working (print using buffered image):
-                    Printable printable = new SignedPrintable(svg);
+                    Printable printable = new SignedPrintable(svg, rotation);
                     SimpleDoc printDoc = new SimpleDoc(printable, DocFlavor.SERVICE_FORMATTED.PRINTABLE, null);
 
                     job.print(printDoc, prAttrSet);

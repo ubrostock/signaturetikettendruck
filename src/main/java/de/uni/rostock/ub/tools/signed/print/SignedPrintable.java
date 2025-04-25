@@ -39,8 +39,11 @@ import org.w3c.dom.svg.SVGDocument;
 public class SignedPrintable implements Printable {
     SVGDocument svgDoc;
 
-    public SignedPrintable(SVGDocument svgDoc) {
+    int rotation;
+
+    public SignedPrintable(SVGDocument svgDoc, int rotation) {
         this.svgDoc = svgDoc;
+        this.rotation = rotation;
     }
 
     @Override
@@ -64,6 +67,7 @@ public class SignedPrintable implements Printable {
         g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
         BufferedImage img = createImage(Math.round(pageFormat.getImageableWidth() * 36));
+        img = rotateBufferedImage(img, rotation);
 
         /* Now we perform our rendering */
         g2d.drawImage((Image) img, 0, 0, (int) Math.round(pageFormat.getImageableWidth()),
@@ -88,4 +92,42 @@ public class SignedPrintable implements Printable {
 
         return null;
     }
+
+    /**
+     * Rotates an image. Note that an angle of -90 is equal to 270.
+     * 
+     * @param img   The image to be rotated
+     * @param angle The angle in degrees (must be a multiple of 90°).
+     * @return The rotated image, or the original image, if the effective angle is
+     *         0°.
+     */
+    public static BufferedImage rotateBufferedImage(BufferedImage img, int angle) {
+        if (angle < 0) {
+            angle = 360 + (angle % 360);
+        }
+        angle = angle % 360;
+
+        if (angle == 0) {
+            return img;
+        }
+
+        if (angle != 90 && angle != 180 && angle != 270) {
+            System.err.println(
+                "Ungültiger Winkel in Property 'signed.printer.rotation'. Erlaubte Werte sind: 0, 90, 180, 270");
+            return img;
+        }
+
+        final boolean r180 = angle == 180;
+        final int w = r180 ? img.getWidth() : img.getHeight();
+        final int h = r180 ? img.getHeight() : img.getWidth();
+        final int type = img.getType() == BufferedImage.TYPE_CUSTOM ? BufferedImage.TYPE_INT_ARGB : img.getType();
+        final BufferedImage rotated = new BufferedImage(w, h, type);
+        final Graphics2D graphic = rotated.createGraphics();
+        graphic.rotate(Math.toRadians(angle), w / 2d, h / 2d);
+        final int offset = r180 ? 0 : (w - h) / 2;
+        graphic.drawImage(img, null, offset, -offset);
+        graphic.dispose();
+        return rotated;
+    }
+
 }
