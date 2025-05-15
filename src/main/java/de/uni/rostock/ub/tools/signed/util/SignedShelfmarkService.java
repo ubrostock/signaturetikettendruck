@@ -21,6 +21,8 @@ package de.uni.rostock.ub.tools.signed.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.SortedSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,58 +44,40 @@ public class SignedShelfmarkService {
         this.config = config;
     }
 
-    public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject signature, String template) {
+    public Map<String, String> calcShelfmarkLabelData(ShelfmarkObject shelfmark, String template) {
         Map<String, String> labelData = new HashMap<>();
-        Map<String, String> patternKeys = config.findTextKeys(template);
+        SortedSet<String> patternKeys = config.findTextKeys(template);
         String cfgKeyRegex = "signed.label." + template + ".regex";
-        if (config.getConfig().keySet().contains(cfgKeyRegex)) {
-            // new variant: regex with named groups
-            Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
-            Matcher m = p.matcher(signature.toLocationAndSignatureString());
-            if (m.find()) {
-
-                for (String name : patternKeys.values()) {
-                    try {
-                        String s = m.group(name);
-                        labelData.put(name, s == null ? "" : s);
-
-                    } catch (IllegalArgumentException | IllegalStateException e) {
-                        // group with given name does not exist
-                        labelData.put(name, "");
-
-                    }
+        Pattern p = Pattern.compile(config.getConfig().getProperty(cfgKeyRegex));
+        Matcher m = p.matcher(shelfmark.toLocationAndSignatureString());
+        if (m.find()) {
+            for (String name : patternKeys) {
+                try {
+                    String s = m.group(name);
+                    labelData.put(name, Objects.requireNonNullElse(s, ""));
+                } catch (IllegalArgumentException | IllegalStateException e) {
+                    // group with given name does not exist
+                    labelData.put(name, "");
                 }
             }
-        } else {
-            // old variant: multiple pattern for each line
-            String signatureString = signature.toLocationAndSignatureString();
-            for (String k : patternKeys.keySet()) {
-                String id = patternKeys.get(k);
-                System.out.println();
-                System.out.print("> " + id + ": ");
-                System.out.print("'" + signatureString + "' ");
-
-                String patternString = config.getConfig()
-                        .getProperty("signed.label." + template + ".pattern." + k + "." + id);
-                Pattern pattern = Pattern.compile(patternString);
-                Matcher matcher = pattern.matcher(signatureString);
-                if (matcher.find()) {
-                    String result = matcher.group();
-                    System.out.print("--> '" + result + "'");
-                    if (matcher.start() == 0) {
-                        signatureString = signatureString.substring(matcher.end());
-                    }
-                    if (!id.equals("_ignore")) {
-                        labelData.put(id, result);
-                    }
-                } else {
-                    if (!id.equals("_ignore")) {
-                        labelData.put(id, "");
-                    }
-                }
-            }
-            System.out.println();
         }
+        modifyLabels(labelData, template);
         return labelData;
+    }
+
+    /**
+     * updates the label values with replacements that are defined in config.properties
+     * signed.label.$template$.line.$line$.replace.$key$=$value$
+     * 
+     * @param labelData
+     * @param template
+     */
+    private void modifyLabels(Map<String, String> labelData, String template) {
+        for (Map.Entry<String, String> label : labelData.entrySet()) {
+            Map<String, String> replacements = config.findReplacements(template, label.getKey());
+            for (Map.Entry<String, String> replacement : replacements.entrySet()) {
+                label.setValue(label.getValue().replace(replacement.getKey(), replacement.getValue()));
+            }
+        }
     }
 }

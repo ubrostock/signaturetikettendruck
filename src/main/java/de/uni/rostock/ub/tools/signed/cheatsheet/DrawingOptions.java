@@ -29,8 +29,11 @@ import java.util.Properties;
  */
 public class DrawingOptions {
     private String unit;
+
     private int rows;
+
     private int cols;
+
     private double offsetX, offsetY, startX, startY;
 
     public DrawingOptions(Properties config) {

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -89,8 +90,8 @@ public class SignedApp {
     }
 
     public String retrieveLoanInfo(String loanIndicator) {
-        String loanInfo = configService.getConfig().getProperty("signed.loanindicator." + loanIndicator);
-        return loanInfo == null ? "" : loanInfo;
+        return Objects.requireNonNullElse(
+            configService.getConfig().getProperty("signed.loanindicator." + loanIndicator), "");
     }
 
     public void printShelfmarkLabel(String template, Map<String, String> labelData) {
@@ -123,10 +124,8 @@ public class SignedApp {
     }
 
     public static String retrieveBuildInfosFromManifest(boolean addCommitInfos) {
-
-        Enumeration<URL> resources;
         try {
-            resources = SignedApp.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+            Enumeration<URL> resources = SignedApp.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
             while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
 
@@ -152,10 +151,8 @@ public class SignedApp {
     }
 
     public static String retrieveVersionFromManifest() {
-
-        Enumeration<URL> resources;
         try {
-            resources = SignedApp.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+            Enumeration<URL> resources = SignedApp.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
             while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
 
