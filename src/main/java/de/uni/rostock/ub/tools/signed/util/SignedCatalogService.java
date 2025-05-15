@@ -31,6 +31,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -64,6 +66,24 @@ public class SignedCatalogService {
 
     private ShelfmarkObject retrieveShelfmarkObjectFromFOLIOWithBarcode(String barcode) throws Exception {
         ShelfmarkObject result = new ShelfmarkObject();
+        URL url = new URL(config.getConfig().getProperty("signed.folio.url").replace("${barcode}", barcode));
+        System.out.println("KatalogSuche: " + url.toString());
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode;
+
+        try (InputStream is = url.openStream()) {
+            jsonNode = objectMapper.readTree(is);
+        }
+
+        if (jsonNode == null) {
+            throw new NullPointerException("Katalogisat konnte nicht gelesen werden");
+        }
+
+        // TODO Check if value
+        result.setSignature(jsonNode.get("items").get("callNumber").asText());
+        result.setLoanindicator(jsonNode.get("items").get("permanentLoanType").get("name").asText());
+        result.setLocation(jsonNode.get("items").get("effectiveLocation").get("name").asText());
+
         return result;
     }
 
