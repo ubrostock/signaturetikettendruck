@@ -43,13 +43,31 @@ import de.uni.rostock.ub.tools.signed.model.ShelfmarkObject;
  *
  */
 public class SignedCatalogService {
-    private SignedConfigService config;
+    private final SignedConfigService config;
 
     public SignedCatalogService(SignedConfigService config) {
         this.config = config;
     }
 
-    public ShelfmarkObject retrieveShelfmarkObjectFromOPACWithBarcode(String barcode) throws Exception {
+    public ShelfmarkObject retrieveShelfmarkObject(String barcode) throws Exception {
+        ShelfmarkObject resultShelfmark = null;
+        if (config.getConfig().getProperty("signed.folio.url") != null) {
+            resultShelfmark = retrieveShelfmarkObjectFromFOLIOWithBarcode(barcode);
+        } else if (config.getConfig().getProperty("signed.sru.url") != null) {
+            resultShelfmark = retrieveShelfmarkObjectFromOPACWithBarcode(barcode);
+        }
+        if (resultShelfmark == null) {
+            throw new NullPointerException("Das Quellsystem ist falsch konfiguriert.");
+        }
+        return resultShelfmark;
+    }
+
+    private ShelfmarkObject retrieveShelfmarkObjectFromFOLIOWithBarcode(String barcode) throws Exception {
+        ShelfmarkObject result = new ShelfmarkObject();
+        return result;
+    }
+
+    private ShelfmarkObject retrieveShelfmarkObjectFromOPACWithBarcode(String barcode) throws Exception {
         ShelfmarkObject result = new ShelfmarkObject();
         URL url = new URL(config.getConfig().getProperty("signed.sru.url").replace("${barcode}", barcode));
         System.out.println("KatalogSuche: " + url.toString());
