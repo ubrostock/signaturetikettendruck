@@ -25,7 +25,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,30 +51,32 @@ public class SignedConfigService {
     private SortedMap<String, String> templateKeys = new TreeMap<String, String>();
 
     public SignedConfigService() {
-        try {
-            config.load(new BufferedReader(new InputStreamReader(
-                    getClass().getResourceAsStream("/signed_cfg.properties"), StandardCharsets.ISO_8859_1)));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+            getClass().getResourceAsStream("/signed_cfg.properties"), StandardCharsets.ISO_8859_1))) {
+            config.load(br);
         } catch (IOException | NullPointerException e) {
             StringBuffer msg = new StringBuffer("Prüfen Sie, ob die Datei signed_cfg.properties existiert!");
-            if(e.getMessage()!=null) {
+            if (e.getMessage() != null) {
                 msg.append("\n").append(e.getMessage());
             }
             System.err.println(msg.toString());
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,msg.toString(), "Fehler in der Konfiguration", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, msg.toString(), "Fehler in der Konfiguration",
+                JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
-        try {
-            printerConfig.load(new BufferedReader(new InputStreamReader(
-                    getClass().getResourceAsStream("/signed_printer.properties"), StandardCharsets.ISO_8859_1)));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+            getClass().getResourceAsStream("/signed_printer.properties"), StandardCharsets.ISO_8859_1))) {
+            printerConfig.load(br);
         } catch (IOException | NullPointerException e) {
             StringBuffer msg = new StringBuffer("Prüfen Sie, ob die Datei signed_printer.properties existiert!");
-            if(e.getMessage()!=null) {
+            if (e.getMessage() != null) {
                 msg.append("\n").append(e.getMessage());
             }
             System.err.println(msg.toString());
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,msg.toString(), "Fehler in der Konfiguration", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, msg.toString(), "Fehler in der Konfiguration",
+                JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 
@@ -105,30 +109,28 @@ public class SignedConfigService {
         return printerConfig;
     }
 
-    public SortedMap<String, String> findTextKeys(String template) {
-        SortedMap<String, String> textKeys = new TreeMap<String, String>();
+    public SortedSet<String> findTextKeys(String template) {
+        SortedSet<String> textKeys = new TreeSet<>();
         String cfgKeyRegex = "signed.label." + template + ".regex";
-        if (config.keySet().contains(cfgKeyRegex)) {
-            String regex = config.getProperty(cfgKeyRegex);
+        String regex = config.getProperty(cfgKeyRegex);
 
-            Matcher m = Pattern.compile("\\([?]<([a-zA-Z][a-zA-Z0-9]+)>").matcher(regex);
-            int count = 0;
-            while (m.find()) {
-                textKeys.put(String.format("%04d", ++count), m.group(1));
-            }
-        } else {
-            // old variant
-            String patternBase = "signed.label." + template + ".pattern.";
-            for (Object o : config.keySet()) {
-                String key = o.toString();
-                if (key.startsWith(patternBase)) {
-                    key = key.substring(patternBase.length());
-                    String[] s = key.split("\\.");
-                    textKeys.put(s[0], s[1]);
-                }
-            }
+        Matcher m = Pattern.compile("\\([?]<([a-zA-Z][a-zA-Z0-9]+)>").matcher(regex);
+        while (m.find()) {
+            textKeys.add(m.group(1));
         }
         return textKeys;
+    }
+
+    public SortedMap<String, String> findReplacements(String template, String line) {
+        SortedMap<String, String> result = new TreeMap<>();
+        String cfgKeyPrefix = "signed.label." + template + ".line." + line + ".replace.";
+        for (Object k : config.keySet()) {
+            String key = k.toString();
+            if (key.startsWith(cfgKeyPrefix)) {
+                result.put(key.substring(cfgKeyPrefix.length()), config.getProperty(key).trim());
+            }
+        }
+        return result;
     }
 
     /**
@@ -139,7 +141,7 @@ public class SignedConfigService {
      */
     public String findTemplateKey(ShelfmarkObject shelfmark) {
         System.out.println("Shelfmark: " + shelfmark.toLocationAndSignatureString());
-        
+
         for (String k : templateKeys.keySet()) {
             String pattern = config.getProperty("signed.template.pattern." + k + "." + templateKeys.get(k));
             if (shelfmark.toLocationAndSignatureString().matches(pattern)) {

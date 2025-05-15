@@ -46,7 +46,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.Vector;
 
 import javax.print.PrintService;
@@ -67,17 +67,29 @@ public class SignedFrame extends Frame {
     private static final long serialVersionUID = 1L;
 
     private TextField txtBarcode;
+
     private TextField txtSignatur;
+
     private TextField txtLocation;
+
     private TextField txtLoanindicator;
+
     private Choice chTemplate;
+
     private Checkbox cbSofortDrucken;
+
     private Button btnExecBarcode;
+
     private Button btnExecSignatur;
+
     private Button btnExecTemplate;
+
     private Button btnExecTexte;
+
     private Panel pnlTexts;
+
     private Button btnDrucken;
+
     private List<TextField> txtLines = new Vector<>();
 
     //alternative: org.apache.batik.swing.JSVGCanvas (bad display quality); 
@@ -116,14 +128,14 @@ public class SignedFrame extends Frame {
 
         Label lblBarcode = new Label("Barcode:");
         add(lblBarcode, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
         txtBarcode = new TextField("");
         String firstBarcode = app.getConfigService().getConfig().getProperty("signed.application.1stbarcode");
-        if(firstBarcode!=null){
+        if (firstBarcode != null) {
             txtBarcode.setText(firstBarcode);
         }
         add(txtBarcode, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 
         txtBarcode.addKeyListener(new KeyAdapter() {
             @Override
@@ -137,8 +149,7 @@ public class SignedFrame extends Frame {
                         printEtikett();
                     }
                 }
-
-            };
+            }
         });
         txtBarcode.addMouseListener(new MouseAdapter() {
             @Override
@@ -151,7 +162,7 @@ public class SignedFrame extends Frame {
 
         btnExecBarcode = new Button("Start");
         add(btnExecBarcode, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         btnExecBarcode.addActionListener(new ActionListener() {
 
             @Override
@@ -168,11 +179,11 @@ public class SignedFrame extends Frame {
 
         Label lblLocation = new Label("Standort:");
         add(lblLocation, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
 
         txtLocation = new TextField();
         add(txtLocation, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         txtLocation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -185,16 +196,15 @@ public class SignedFrame extends Frame {
         txtLoanindicator = new TextField();
         txtLoanindicator.setEditable(false);
         add(txtLoanindicator, new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 
-        
         Label lblSignatur = new Label("Signatur:");
         add(lblSignatur, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
 
         txtSignatur = new TextField();
         add(txtSignatur, new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         txtSignatur.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -206,7 +216,7 @@ public class SignedFrame extends Frame {
 
         btnExecSignatur = new Button("Start");
         add(btnExecSignatur, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         btnExecSignatur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -221,18 +231,18 @@ public class SignedFrame extends Frame {
 
         Label lblTemplate = new Label("Vorlage:");
         add(lblTemplate, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
         chTemplate = new Choice();
 
         for (String k : app.getConfigService().getTemplateKeys().values()) {
             chTemplate.add(app.getConfigService().findTemplateName(k));
         }
         add(chTemplate, new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 
         btnExecTemplate = new Button("Start");
         add(btnExecTemplate, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         btnExecTemplate.addActionListener(new ActionListener() {
 
             @Override
@@ -247,12 +257,12 @@ public class SignedFrame extends Frame {
 
         Label lblEttiket = new Label("Etikett:");
         add(lblEttiket, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
 
         Panel pnlEtikett = new Panel();
         pnlEtikett.setLayout(new GridLayout(1, 2, 8, 0));
         add(pnlEtikett, new GridBagConstraints(1, 4, 2, 3, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(8, 8, 8, 8), 0, 0));
+            new Insets(8, 8, 8, 8), 0, 0));
 
         pnlTexts = new Panel();
         pnlTexts.setLayout(new GridBagLayout());
@@ -263,7 +273,7 @@ public class SignedFrame extends Frame {
 
         btnExecTexte = new Button("Bild aktualisieren");
         add(btnExecTexte, new GridBagConstraints(3, 4, 1, 1, 0.0, 1.0, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         btnExecTexte.addActionListener(new ActionListener() {
 
             @Override
@@ -277,7 +287,7 @@ public class SignedFrame extends Frame {
 
         btnDrucken = new Button("Drucken");
         add(btnDrucken, new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0, GridBagConstraints.LAST_LINE_END,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
         btnDrucken.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -288,7 +298,7 @@ public class SignedFrame extends Frame {
 
         cbSofortDrucken = new Checkbox("Sofort Drucken");
         add(cbSofortDrucken, new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
+            GridBagConstraints.NONE, new Insets(8, 8, 8, 8), 0, 0));
 
         setVisible(true);
 
@@ -308,14 +318,14 @@ public class SignedFrame extends Frame {
             txtBarcode.setText(txtBarcode.getText().toUpperCase());
             txtSignatur.setText("");
             ShelfmarkObject signObject = app.retrieveShelfmarkFromOPACByBarcode(txtBarcode.getText());
-            txtSignatur.setText(signObject.getSignature());
-            txtLoanindicator.setName(signObject.getLoanindicator());
-            txtLoanindicator.setText(" @ " + signObject.getLoanindicator());
-            String loanInfo = app.retrieveLoanInfo(signObject.getLoanindicator());
+            txtSignatur.setText(signObject.signature());
+            txtLoanindicator.setName(signObject.loanindicator());
+            txtLoanindicator.setText(" @ " + signObject.loanindicator());
+            String loanInfo = app.retrieveLoanInfo(signObject.loanindicator());
             if (loanInfo != null) {
-                txtLoanindicator.setText(" @ " + signObject.getLoanindicator() + "   [" + loanInfo + "]");
+                txtLoanindicator.setText(" @ " + signObject.loanindicator() + "   [" + loanInfo + "]");
             }
-            txtLocation.setText(signObject.getLocation());
+            txtLocation.setText(signObject.location());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -343,22 +353,19 @@ public class SignedFrame extends Frame {
         pnlTexts.removeAll();
         txtLines.clear();
 
-        SortedMap<String, String> textKeys = app.getConfigService().findTextKeys(readTemplateKey());
+        SortedSet<String> textKeys = app.getConfigService().findTextKeys(readTemplateKey());
         Map<String, String> labelData = app.calcShelfmarkLabelData(readShelfmark(), readTemplateKey());
 
         int pos = 0;
-        for (String id : textKeys.values()) {
-            if (!id.equals("_ignore")) {
-
-                Label lbl = new Label(app.retrieveLabelFromSVG(svg, id) + ":");
-                pnlTexts.add(lbl, new GridBagConstraints(0, ++pos, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                        GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-                TextField txt = new TextField(labelData.get(id));
-                txt.setName(id);
-                pnlTexts.add(txt, new GridBagConstraints(1, pos, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-                        GridBagConstraints.HORIZONTAL, new Insets(4, 4, 4, 4), 0, 0));
-                txtLines.add(txt);
-            }
+        for (String id : textKeys) {
+            Label lbl = new Label(app.retrieveLabelFromSVG(svg, id) + ":");
+            pnlTexts.add(lbl, new GridBagConstraints(0, ++pos, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+            TextField txt = new TextField(labelData.get(id));
+            txt.setName(id);
+            pnlTexts.add(txt, new GridBagConstraints(1, pos, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(4, 4, 4, 4), 0, 0));
+            txtLines.add(txt);
         }
         doLayout();
         pnlTexts.doLayout();
@@ -379,12 +386,10 @@ public class SignedFrame extends Frame {
     }
 
     private ShelfmarkObject readShelfmark() {
-        ShelfmarkObject sgn = new ShelfmarkObject();
-        sgn.setLocation(txtLocation.getText().trim());
-        sgn.setSignature(txtSignatur.getText().trim());
-        sgn.setLoanindicator(txtLoanindicator.getName());
-
-        return sgn;
+        return new ShelfmarkObject(
+            txtLocation.getText().trim(),
+            txtSignatur.getText().trim(),
+            txtLoanindicator.getName());
     }
 
     private String readTemplateKey() {

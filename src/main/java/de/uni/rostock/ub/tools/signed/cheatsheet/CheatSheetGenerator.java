@@ -78,11 +78,10 @@ public class CheatSheetGenerator {
                     // Finally, stream out SVG to the standard output using UTF-8 encoding.
                     DrawingOptions drawOpts = new DrawingOptions(config);
 
-                    
                     String[] data = config.getProperty(key).split(",");
                     for (int i = 0; i < data.length; i++) {
                         String barcode = data[i].trim();
-                        if (barcode.length() > 0) {
+                        if (!barcode.isEmpty()) {
                             drawEttikett(doc, i, barcode, drawOpts);
                         }
                     }
@@ -98,48 +97,41 @@ public class CheatSheetGenerator {
     }
 
     private void drawEttikett(SVGDocument doc, int pos, String barcode, DrawingOptions drawOpts) {
-        try {
-            ShelfmarkObject shelfmark = app.retrieveShelfmarkFromOPACByBarcode(barcode);
-            String template = app.getConfigService().findTemplateKey(shelfmark);
-            String filename = app.getConfigService().getConfig().getProperty("signed.label." + template + ".templatefile");
+        ShelfmarkObject shelfmark = app.retrieveShelfmarkFromOPACByBarcode(barcode);
+        String template = app.getConfigService().findTemplateKey(shelfmark);
 
-            try (InputStream is = getClass().getResourceAsStream("/" + filename)){
-                SVGDocument docEtti = app.calcSVG(template, app.calcShelfmarkLabelData(shelfmark, template), false);
-                SVGElement elem = docEtti.getRootElement();
-                double x = drawOpts.getStartX() + (pos % drawOpts.getCols() * drawOpts.getOffsetX());
-                double y = drawOpts.getStartY() + ((pos / drawOpts.getCols()) * drawOpts.getOffsetY());
+        SVGDocument docEtti = app.calcSVG(template, app.calcShelfmarkLabelData(shelfmark, template), false);
+        SVGElement elem = docEtti.getRootElement();
+        double x = drawOpts.getStartX() + (pos % drawOpts.getCols() * drawOpts.getOffsetX());
+        double y = drawOpts.getStartY() + (pos / drawOpts.getCols() * drawOpts.getOffsetY());
 
-                elem.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
-                elem.setAttribute("y", Double.toString(y + 8) + drawOpts.getUnit());
+        elem.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
+        elem.setAttribute("y", Double.toString(y + 8) + drawOpts.getUnit());
 
-                doc.getRootElement().appendChild(doc.adoptNode(elem));
+        doc.getRootElement().appendChild(doc.adoptNode(elem));
 
-                Element textBarcode = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
-                textBarcode.appendChild(doc.createTextNode(barcode));
-                textBarcode.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
-                textBarcode.setAttribute("y", Double.toString(y) + drawOpts.getUnit());
-                textBarcode.setAttribute("style", "fill:black;font-family:Arial;font-size:12px;");
-                doc.getRootElement().appendChild(textBarcode);
+        Element textBarcode = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
+        textBarcode.appendChild(doc.createTextNode(barcode));
+        textBarcode.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
+        textBarcode.setAttribute("y", Double.toString(y) + drawOpts.getUnit());
+        textBarcode.setAttribute("style", "fill:black;font-family:Arial;font-size:12px;");
+        doc.getRootElement().appendChild(textBarcode);
 
-                Element textLocation = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
-                textLocation.appendChild(doc.createTextNode("!" + shelfmark.getLocation() + "!"));
-                textLocation.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
-                textLocation.setAttribute("y", Double.toString(y + 3.5) + drawOpts.getUnit());
-                textLocation.setAttribute("style",
-                        "fill:black;font-family:Arial;font-weight:bold; font-stretch: condensed;font-size:12px;");
-                doc.getRootElement().appendChild(textLocation);
+        Element textLocation = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
+        textLocation.appendChild(doc.createTextNode("!" + shelfmark.location() + "!"));
+        textLocation.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
+        textLocation.setAttribute("y", Double.toString(y + 3.5) + drawOpts.getUnit());
+        textLocation.setAttribute("style",
+            "fill:black;font-family:Arial;font-weight:bold; font-stretch: condensed;font-size:12px;");
+        doc.getRootElement().appendChild(textLocation);
 
-                Element textSignature = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
-                textSignature.appendChild(doc.createTextNode(shelfmark.getSignature()));
-                textSignature.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
-                textSignature.setAttribute("y", Double.toString(y + 7) + drawOpts.getUnit());
-                textSignature.setAttribute("style",
-                        "fill:black;font-family:Arial;font-weight:bold; font-stretch: condensed;font-size:12px;");
-                doc.getRootElement().appendChild(textSignature);
+        Element textSignature = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
+        textSignature.appendChild(doc.createTextNode(shelfmark.signature()));
+        textSignature.setAttribute("x", Double.toString(x) + drawOpts.getUnit());
+        textSignature.setAttribute("y", Double.toString(y + 7) + drawOpts.getUnit());
+        textSignature.setAttribute("style",
+            "fill:black;font-family:Arial;font-weight:bold; font-stretch: condensed;font-size:12px;");
+        doc.getRootElement().appendChild(textSignature);
 
-            }
-        } catch (Exception e) {
-
-        }
     }
 }

@@ -19,6 +19,8 @@
  */
 package de.uni.rostock.ub.tools.signed.model;
 
+import java.util.Objects;
+
 /**
  * ShelfmarkObject is a Java bean that contains informations for shelfmarks
  * the location string, the shelfmark, the loan indicator 
@@ -26,37 +28,12 @@ package de.uni.rostock.ub.tools.signed.model;
  * @author Robert Stephan, Rostock University Library
  *
  */
-public class ShelfmarkObject {
-    private String signature = "";
-    private String location = "";
-    private String loanindicator = "";
+public record ShelfmarkObject(String location, String signature, String loanindicator) {
 
-    public ShelfmarkObject() {
-
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getLoanindicator() {
-        return loanindicator;
-    }
-
-    public void setLoanindicator(String loanindicator) {
-        this.loanindicator = loanindicator;
+    public ShelfmarkObject {
+        location = Objects.requireNonNullElse(location, "");
+        signature = Objects.requireNonNullElse(signature, "");
+        loanindicator = Objects.requireNonNullElse(loanindicator, "");
     }
 
     public String toLocationAndSignatureString() {

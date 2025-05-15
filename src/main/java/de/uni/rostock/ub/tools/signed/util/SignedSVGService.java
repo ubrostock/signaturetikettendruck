@@ -19,10 +19,10 @@
  */
 package de.uni.rostock.ub.tools.signed.util;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
@@ -52,25 +52,21 @@ public class SignedSVGService {
 
     public void updateSVG(SVGDocument svg, String template, Map<String, String> texte) {
         //clear fields in SVG
-        for (String key : config.findTextKeys(template).values()) {
-            if (svg.getElementById(key) == null) {
-                // do nothing
-            } else {
+        for (String key : config.findTextKeys(template)) {
+            if (svg.getElementById(key) != null) {
                 setTextContent(svg.getElementById(key), "");
             }
         }
 
         //set fields
         for (String id : texte.keySet()) {
-            if (svg.getElementById(id) == null) {
-                // do nothing
-            } else {
+            if (svg.getElementById(id) != null) {
                 setTextContent(svg.getElementById(id), texte.get(id));
             }
         }
 
         //delete unfilled / empty text nodes
-        for (String key : config.findTextKeys(template).values()) {
+        for (String key : config.findTextKeys(template)) {
             if (!texte.containsKey(key) || texte.get(key).trim().length() == 0) {
                 Element e = svg.getElementById(key);
                 if (e != null) {
@@ -80,10 +76,10 @@ public class SignedSVGService {
         }
     }
 
-    public void outputSVG(SVGDocument svgDoc, File f) {
-        try (OutputStreamWriter ow = new OutputStreamWriter(new FileOutputStream(f), "UTF-8")) {
+    public void outputSVG(SVGDocument svgDoc, Path p) {
+        try (BufferedWriter ow = Files.newBufferedWriter(p)) {
             TranscoderInput input = new TranscoderInput(svgDoc);
-            TranscoderOutput output = new TranscoderOutput();
+            TranscoderOutput output = new TranscoderOutput(ow);
             Transcoder t = new SVGTranscoder();
             t.transcode(input, output);
         } catch (Exception e) {
@@ -122,18 +118,6 @@ public class SignedSVGService {
             doc = fac.createSVGDocument(null, is);
             updateSVG(doc, template, texts);
             if (print) {
-                // delete SVG elements, with id (defined in property)
-                if (config.getConfig().getProperty("signed.label." + template + ".noprint") != null) {
-                    String[] noPrintIDs = config.getConfig().getProperty("signed.label." + template + ".noprint")
-                        .split(",");
-                    for (String id : noPrintIDs) {
-                        Element e = doc.getElementById(id.trim());
-                        if (e != null) {
-                            e.getParentNode().removeChild(e);
-                        }
-                    }
-                }
-
                 // delete all SVG elements with attribute class="noprint"
                 // iterate from last to first, that the counter keeps valid if an element was
                 // deleted
