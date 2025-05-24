@@ -34,4 +34,5 @@ jobs:
           echo "clean-version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
 
       - name: Use clean version
-        run: echo "Final version without -SNAPSHOT: ${{ steps.clean-version.outputs.clean-version }}"
+        run: |
+          echo "Final version without -SNAPSHOT: ${{ steps.clean-version.outputs.clean-version }}"
