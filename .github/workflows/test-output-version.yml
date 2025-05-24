@@ -1,0 +1,37 @@
+name: Extract Maven Version
+
+on:
+#  push:
+#    tags:
+#      - 'v*'  # Dieser Trigger funktioniert, wenn ein Tag im Format "v*" gepusht wird
+  workflow_dispatch:   # manuelles Ausführen
+    # Optional: Hier kannst du Eingabefelder definieren
+    inputs:
+      tag:
+        description: 'Enter the tag to deploy (ohne "v")'
+        required: true
+        default: '1.0.0'
+jobs:
+  extract-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+         with:
+          ref: 'refs/tags/v${{ github.event.inputs.tag }}'
+
+      - name: Get Maven version
+        id: get-version
+        uses: JActions/maven-version@v1
+
+      - name: Strip -SNAPSHOT suffix
+        id: clean-version
+        run: |
+          RAW_VERSION="${{ steps.get-version.outputs.version }}"
+          CLEAN_VERSION="${RAW_VERSION%-SNAPSHOT}"
+          echo "Clean version: $CLEAN_VERSION"
+          echo "clean-version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Use clean version
+        run: echo "Final version without -SNAPSHOT: ${{ steps.clean-version.outputs.clean-version }}"
