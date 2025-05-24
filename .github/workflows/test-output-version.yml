@@ -23,7 +23,7 @@ jobs:
 
       - name: Get Maven version
         id: get-version
-        uses: jactions/maven-version@v1
+        uses: jactions/maven-version@v1.2.0
 
       - name: Strip -SNAPSHOT suffix
         id: clean-version
