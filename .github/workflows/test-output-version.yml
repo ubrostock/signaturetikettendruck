@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-         with:
+        with:
           ref: 'refs/tags/v${{ github.event.inputs.tag }}'
 
       - name: Get Maven version
