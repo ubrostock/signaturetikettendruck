@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      width="30mm" height="50mm"
+      viewBox="0 0 114 189">
+<!--  viewBox wird benötigt für auto-zoom in swing.JSVGCanvas. 
+ 		Berechnung aus width und height (mm -> pixel): x * 96 / 25.4  -->
+    <rect id="border" class="noprint" x="0.2mm" y="0.2mm" width="29.6mm" height="49.6mm" rx="3mm" ry="3mm" 
+          style="fill:none;stroke:black;stroke-width:0.2mm;" />
+    <text style="fill:black;font-family:Arial;font-size:15pt;font-weight:bold">
+        <tspan id="zeile1" aria-label="Zeile 1" x="10px" y="50px">Semester-</tspan>
+        <tspan id="zeile2" aria-label="Zeile 2" x="10px" y="85px">apparat</tspan>
+        <tspan id="zeile3" aria-label="Zeile 3" x="10px" y="120px">Prof.</tspan>
+        <tspan id="zeile4" aria-label="Zeile 4" x="10px" y="155px">Muster</tspan>
+    </text>
+</svg>
