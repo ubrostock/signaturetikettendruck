@@ -8,7 +8,7 @@
   <name>signaturetikettendruck</name>
   <url>https://github.com/ubrostock/signaturetikettendruck</url>
   <properties>
-    <revision>1.4.0</revision>
+    <revision>1.5-SNAPSHOT</revision>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <batik.version>1.18</batik.version>
