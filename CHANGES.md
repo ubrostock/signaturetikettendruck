@@ -1,8 +1,8 @@
 Changelog und Migrationsanleitung für Signaturetikettendruck
 ============================================================
 
-Version 1.4.0 (April 2025)
---------------------------
+Version 1.4.0 (Oktober 2025)
+----------------------------
 ### Verbesserungen
 - Update auf Java 17
 - Code-Bereinigung (Verwendung von Java17 Features und Löschen veralteter Codebestandteile)
@@ -10,6 +10,7 @@ Version 1.4.0 (April 2025)
 - Hinzufügen einer **Ersetzungfunktion**
   - Über Properties können jetzt Zeichen innerhalb einer Zeile ersetzt werden,
     z.B. um Standort-Codes oder Fachsystematikstellen ausschreiben zu können.
+- **Rotation** der Ausgabe vor dem Ausdruck (in 90° Schritten)    
 
 
 Version 1.3.0 (Dezember 2022)
